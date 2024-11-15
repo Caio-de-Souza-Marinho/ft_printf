@@ -1,27 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/12 21:11:51 by caide-so          #+#    #+#             */
-/*   Updated: 2024/11/15 19:15:12 by caide-so         ###   ########.fr       */
+/*   Created: 2024/11/15 17:33:10 by caide-so          #+#    #+#             */
+/*   Updated: 2024/11/15 18:46:32 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "src/ft_printf.h"
-#include <stdio.h>
+#ifndef FT_PRINTF_H
+# define FT_PRINTF_H
+# include <stdarg.h>
+# include <stdlib.h>
+# include <unistd.h>
 
-int	main(void)
-{
-	//char	*str = "caio";
-	char	c = 'a';
-	int	teste = ft_printf("%c", c);
-	int	res = 1;
-	if (teste == res)
-		printf("ok\n");
-	else
-		printf("se fudeu\n");	
-	return (0);
-}
+int	ft_printf(const char *format, ...);
+int	ft_putchar_printf(char c);
+
+#endif 
