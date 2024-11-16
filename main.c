@@ -20,8 +20,8 @@ int	main(void)
 	int	teste = ft_printf("%c", c);
 	int	res = 1;
 	if (teste == res)
-		printf("ok\n");
+		printf("\nok\n");
 	else
-		printf("se fudeu\n");	
+		printf("\nse fudeu\n");	
 	return (0);
 }
