@@ -1,0 +1,6 @@
+*.swp
+*.tmp
+*.out
+*.tests
+*.o
+*.a
