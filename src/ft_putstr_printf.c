@@ -1,19 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putchar_printf.c                                :+:      :+:    :+:   */
+/*   ft_putstr_printf.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/15 18:44:43 by caide-so          #+#    #+#             */
-/*   Updated: 2024/11/17 16:56:33 by caide-so         ###   ########.fr       */
+/*   Created: 2024/11/17 16:53:42 by caide-so          #+#    #+#             */
+/*   Updated: 2024/11/17 16:56:28 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_putchar_printf(char c,  int fd)
+int	ft_putstr_printf(char *s, int fd)
 {
-	write(fd, &c, 1);
-	return (1);
+	int	i;	
+
+	i = 0;
+	while (s[i] != '\0')
+	{
+		write(fd, &s[i], 1);
+		i++;
+	}
+	return (i);
 }

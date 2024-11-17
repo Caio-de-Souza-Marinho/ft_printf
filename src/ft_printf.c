@@ -31,7 +31,7 @@ int	ft_printf(const char *format, ...)
 			i++;
 		}
 		else
-			count += ft_putchar_printf(format[i]);
+			count += ft_putchar_printf(format[i], 1);
 		i++;
 	}
 	va_end(ap);
@@ -44,6 +44,8 @@ int	flag_suite(char flag, va_list ap)
 
 	count = 0;
 	if (flag == 'c')
-		count += ft_putchar_printf(va_arg(ap, int));
+		count += ft_putchar_printf(va_arg(ap, int), 1);
+	else if (flag == 's')
+		count += ft_putstr_printf(va_arg(ap, char *), 1);
 	return (count);
 }
