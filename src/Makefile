@@ -3,7 +3,12 @@ CC	= cc
 CFLAGS	= -Wall -Wextra -Werror
 RM	= rm -f
 
-SRCS		= ft_printf.c ft_putchar_printf.c ft_putstr_printf.c
+SRCS		= ft_printf.c \
+		  ft_putchar_printf.c \
+		  ft_putstr_printf.c \
+		  ft_putptr_printf.c \
+		  ft_puthex_printf.c
+
 OBJS		= ${SRCS:.c=.o}
 BONUS 		= 
 BONUS_OBJS 	= ${BONUS:.c=.o}

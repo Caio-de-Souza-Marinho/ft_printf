@@ -1,25 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   ft_putptr_printf.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/15 17:33:10 by caide-so          #+#    #+#             */
-/*   Updated: 2024/11/17 23:44:50 by caide-so         ###   ########.fr       */
+/*   Created: 2024/11/17 19:02:51 by caide-so          #+#    #+#             */
+/*   Updated: 2024/11/17 23:45:28 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
-# include <stdarg.h>
-# include <stdlib.h>
-# include <unistd.h>
+#include "ft_printf.h"
 
-int	ft_printf(const char *format, ...);
-int	ft_putchar_printf(char c, int fd);
-int	ft_putstr_printf(char *s, int fd);
-int	ft_putptr_printf(unsigned long ptr, int fd);
-int	ft_putptr_hex_printf(unsigned long ptr, int fd);
+int	ft_putptr_printf(unsigned long ptr, int fd)
+{
+	int	count;
 
-#endif 
+	if (ptr == 0)
+		count = ft_putstr_printf("(nil)", fd);
+	else
+	{
+		count = ft_putstr_printf("0x", fd);
+		count += ft_putptr_hex_printf(ptr, fd);
+	}
+	return (count);
+}
