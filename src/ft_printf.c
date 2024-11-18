@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-int	flag_suite(char flag, va_list ap);
+static int	specifier_process(char specifier, va_list ap);
 
 int	ft_printf(const char *format, ...)
 {
@@ -27,7 +27,7 @@ int	ft_printf(const char *format, ...)
 	{
 		if (format[i] == '%')
 		{
-			count += flag_suite(format[i + 1], ap);
+			count += specifier_process(format[i + 1], ap);
 			i++;
 		}
 		else
@@ -38,16 +38,18 @@ int	ft_printf(const char *format, ...)
 	return (count);
 }
 
-int	flag_suite(char flag, va_list ap)
+static int	specifier_process(char specifier, va_list ap)
 {
 	int	count;
 
 	count = 0;
-	if (flag == 'c')
+	if (specifier == 'c')
 		count += ft_putchar_printf(va_arg(ap, int), 1);
-	else if (flag == 's')
+	else if (specifier == 's')
 		count += ft_putstr_printf(va_arg(ap, char *), 1);
-	else if (flag == 'p')
+	else if (specifier == 'p')
 		count += ft_putptr_printf(va_arg(ap, unsigned long), 1);
+	else if (specifier == '%')
+		count += ft_putchar_printf('%', 1);
 	return (count);
 }
