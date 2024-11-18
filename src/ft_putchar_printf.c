@@ -6,13 +6,13 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 18:44:43 by caide-so          #+#    #+#             */
-/*   Updated: 2024/11/17 16:56:33 by caide-so         ###   ########.fr       */
+/*   Updated: 2024/11/17 19:35:31 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_putchar_printf(char c,  int fd)
+int	ft_putchar_printf(char c, int fd)
 {
 	write(fd, &c, 1);
 	return (1);
