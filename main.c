@@ -6,23 +6,20 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 21:11:51 by caide-so          #+#    #+#             */
-/*   Updated: 2024/11/17 23:43:38 by caide-so         ###   ########.fr       */
+/*   Updated: 2024/11/18 20:45:31 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "src/ft_printf.h"
 #include <stdio.h>
+#include <limits.h>
 
 int	main(void)
 {
-	char	*str = NULL;
-
-	int	res_num = ft_printf("%s\n", str);
-	int	act_num = printf("%s\n", str);
-	if (res_num == act_num)
-		printf("\nok\n");
-	else
-		printf("\nse fudeu\n");	
+	int	num1 = INT_MAX;
+	int	num2 = INT_MIN;
+	printf("%d\n", num1 + 1);
+	printf("%d\n", num2 - 1);
 
 	return (0);
 }

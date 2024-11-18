@@ -9,7 +9,8 @@ SRCS		= ${SRCDIR}ft_printf.c \
 		  ${SRCDIR}ft_putchar_printf.c \
 		  ${SRCDIR}ft_putstr_printf.c \
 		  ${SRCDIR}ft_putptr_printf.c \
-		  ${SRCDIR}ft_putptr_hex_printf.c
+		  ${SRCDIR}ft_putptr_hex_printf.c \
+		  ${SRCDIR}ft_putnbr_printf.c
 
 OBJS		= ${SRCS:.c=.o}
 

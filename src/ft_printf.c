@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 17:13:05 by caide-so          #+#    #+#             */
-/*   Updated: 2024/11/17 19:31:50 by caide-so         ###   ########.fr       */
+/*   Updated: 2024/11/18 20:08:38 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ static int	specifier_process(char specifier, va_list ap)
 		count += ft_putstr_printf(va_arg(ap, char *), 1);
 	else if (specifier == 'p')
 		count += ft_putptr_printf(va_arg(ap, unsigned long), 1);
+	else if (specifier == 'd' || specifier == 'i')
+		count += ft_putnbr_printf(va_arg(ap, int), 1);
 	else if (specifier == '%')
 		count += ft_putchar_printf('%', 1);
 	return (count);

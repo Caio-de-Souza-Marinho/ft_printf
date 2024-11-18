@@ -7,7 +7,8 @@ SRCS		= ft_printf.c \
 		  ft_putchar_printf.c \
 		  ft_putstr_printf.c \
 		  ft_putptr_printf.c \
-		  ft_putptr_hex_printf.c
+		  ft_putptr_hex_printf.c \
+		  ft_putnbr_printf.c
 
 OBJS		= ${SRCS:.c=.o}
 BONUS 		= 
