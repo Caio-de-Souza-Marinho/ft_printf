@@ -1,27 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_puthex_printf.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/12 21:11:51 by caide-so          #+#    #+#             */
-/*   Updated: 2024/11/18 21:41:49 by caide-so         ###   ########.fr       */
+/*   Created: 2024/11/18 21:39:54 by caide-so          #+#    #+#             */
+/*   Updated: 2024/11/18 21:52:07 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "src/ft_printf.h"
-#include <stdio.h>
-#include <limits.h>
+#include "ft_printf.h"
 
-int	main(void)
+int	ft_puthex_printf(unsigned int nbr, int fd, char type)
 {
-	int	num1 = -42;
-	int	num2 = -24;
-	printf("%x\n", num1);
-	printf("%x\n", num2);
-	printf("%X\n", num1);
-	printf("%X\n", num2);
+	int	count;
 
-	return (0);
+	count = 0;
+	if (nbr >= 16)
+		count += ft_puthex_printf(nbr / 16, fd, type);
+	if (type == 'l')
+		count += ft_putchar_printf("0123456789abcdef"[nbr % 16], fd);
+	else if (type == 'u')
+		count += ft_putchar_printf("0123456789ABCDEF"[nbr % 16], fd);
+	return (count);
 }
