@@ -6,12 +6,56 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 17:13:05 by caide-so          #+#    #+#             */
-/*   Updated: 2024/11/18 21:37:44 by caide-so         ###   ########.fr       */
+/*   Updated: 2024/11/20 18:53:53 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
+static int	init_data(t_data *data, const char *format);
+
+int	ft_printf(const char *format, ...)
+{
+	t_data	data;
+
+	va_start(data.ap, format);
+	if (init_data(&data, format))
+		return (-1);
+	while (*data.s != '\0')
+	{
+		if (*data.s == '%' && *(++data.s))
+		{
+			if (parse_format(&data))
+			{
+				return (-1);
+			}
+			render_format(&data);
+		}
+		else
+		{
+			write_buffer(&data, *data.s);
+		}
+		++data.s;
+	}
+	flush_buf(&data);
+	va_end(data.ap);
+	free(data.buf);
+	return (data.chars_written);
+}
+
+static int	init_data(t_data *data, const char *format)
+{
+	data->s = format;
+	data->chars_written = 0;
+	data->buf = malloc(BUF_SIZE * sizeof(char));
+	if (data->buf == NULL)
+		return (-1);
+	ft_memset(data->buf, 0, BUF_SIZE * sizeof(char));
+	data->buffer_index = 0;
+	return (0);
+}
+
+/*
 static int	specifier_process(char specifier, va_list ap);
 
 int	ft_printf(const char *format, ...)
@@ -61,3 +105,4 @@ static int	specifier_process(char specifier, va_list ap)
 		count += ft_putchar_printf('%', 1);
 	return (count);
 }
+*/

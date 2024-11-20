@@ -13,8 +13,6 @@ SRCS		= ft_printf.c \
 		  ft_puthex_printf.c
 
 OBJS		= ${SRCS:.c=.o}
-BONUS 		= 
-BONUS_OBJS 	= ${BONUS:.c=.o}
 
 all:		${NAME}
 
@@ -24,15 +22,12 @@ all:		${NAME}
 ${NAME}:	${OBJS}
 			ar rcs ${NAME} ${OBJS}
 
-bonus:		${BONUS_OBJS}
-			ar rcs ${NAME} ${BONUS_OBJS}
-
 clean:		
-			${RM} ${OBJS} ${BONUS_OBJS}
+			${RM} ${OBJS}
 
 fclean:		clean
 			${RM} ${NAME}
 
 re:		fclean all
 
-.PHONY:		all bonus clean fclean re
+.PHONY:		all clean fclean re

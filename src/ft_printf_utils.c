@@ -1,24 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_printf_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/12 21:11:51 by caide-so          #+#    #+#             */
-/*   Updated: 2024/11/18 21:41:49 by caide-so         ###   ########.fr       */
+/*   Created: 2024/10/09 20:12:23 by caide-so          #+#    #+#             */
+/*   Updated: 2024/11/20 18:27:39 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "src/ft_printf.h"
-#include <stdio.h>
-#include <limits.h>
+#include "ft_printf.h"
 
-int	main(void)
+void	*ft_memset(void *s, int c, size_t n)
 {
-	char	*str = "caio";
-	//int	num1 = 2042;
-	printf("[%.6s]\n", str);
+	unsigned char	*typed_s;
+	size_t			i;
 
-	return (0);
+	i = 0;
+	typed_s = (unsigned char *)s;
+	while (i < n)
+	{
+		typed_s[i] = (unsigned char)c;
+		i++;
+	}
+	return (s);
 }
