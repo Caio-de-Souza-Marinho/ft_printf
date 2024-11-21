@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 17:13:05 by caide-so          #+#    #+#             */
-/*   Updated: 2024/11/20 18:53:53 by caide-so         ###   ########.fr       */
+/*   Updated: 2024/11/20 20:55:10 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	ft_printf(const char *format, ...)
 		return (-1);
 	while (*data.s != '\0')
 	{
-		if (*data.s == '%' && *(++data.s))
+		if (*data.s == '%' && *(data.s++))
 		{
 			if (parse_format(&data))
 			{
@@ -35,7 +35,7 @@ int	ft_printf(const char *format, ...)
 		{
 			write_buffer(&data, *data.s);
 		}
-		++data.s;
+		data.s++;
 	}
 	flush_buf(&data);
 	va_end(data.ap);

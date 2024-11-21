@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 17:33:10 by caide-so          #+#    #+#             */
-/*   Updated: 2024/11/20 18:50:50 by caide-so         ###   ########.fr       */
+/*   Updated: 2024/11/20 21:09:54 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@
 # include <unistd.h>
 
 # define BUF_SIZE 4096
+# define FLAGS "+- 0#"
+# define NUMBERS "0123456789"
+# define SPECIFIERS "cspdiuxX"
 
 int		ft_printf(const char *format, ...);
 int		ft_putchar_printf(int c, int fd);
@@ -37,6 +40,8 @@ typedef struct s_format
 	char	specifier;
 	int		width_value;
 	int		precision_value;
+	int		base;
+	int		upper_case;
 }	t_format;
 
 typedef struct s_data
@@ -53,5 +58,9 @@ typedef struct s_data
 
 // utils
 void	*ft_memset(void *s, int c, size_t n);
+int		in(const char *s, char c);
+
+// parser
+int		parse_format(t_data *data);
 
 #endif 

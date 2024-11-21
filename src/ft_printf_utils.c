@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 20:12:23 by caide-so          #+#    #+#             */
-/*   Updated: 2024/11/20 18:27:39 by caide-so         ###   ########.fr       */
+/*   Updated: 2024/11/20 20:14:33 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,17 @@ void	*ft_memset(void *s, int c, size_t n)
 		i++;
 	}
 	return (s);
+}
+
+int	in(const char *s, char c)
+{
+	if (s == NULL)
+		return (0);
+	while (*s)
+	{
+		if (*s == c)
+			return (1);
+		s++;
+	}
+	return (0);
 }

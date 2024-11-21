@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 21:11:51 by caide-so          #+#    #+#             */
-/*   Updated: 2024/11/18 21:41:49 by caide-so         ###   ########.fr       */
+/*   Updated: 2024/11/20 20:40:28 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 
 int	main(void)
 {
-	char	*str = "caio";
-	//int	num1 = 2042;
-	printf("[%.6s]\n", str);
+	//char	*str = "caio";
+	int	num1 = 2042;
+	printf("[%*d]\n[%*d]", 10, num1, 5, num1);
 
 	return (0);
 }
