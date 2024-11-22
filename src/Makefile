@@ -4,15 +4,20 @@ CFLAGS	= -Wall -Wextra -Werror
 RM	= rm -f
 
 SRCS		= ft_printf.c \
-		  ft_putchar_printf.c \
-		  ft_putstr_printf.c \
-		  ft_putptr_printf.c \
-		  ft_putptr_hex_printf.c \
-		  ft_putnbr_printf.c \
-		  ft_putunbr_printf.c \
-		  ft_puthex_printf.c
+		  parser.c \
+		  ft_printf_utils.c \
+		  buffer.c \
+		  printf_char.c
 
 OBJS		= ${SRCS:.c=.o}
+
+BONUS 		= ft_printf.c \
+		  parser.c \
+		  ft_printf_utils.c \
+		  buffer.c \
+		  printf_char.c
+
+BONUS_OBJS 	= ${BONUS:.c=.o}
 
 all:		${NAME}
 
@@ -22,12 +27,15 @@ all:		${NAME}
 ${NAME}:	${OBJS}
 			ar rcs ${NAME} ${OBJS}
 
+bonus:		${BONUS_OBJS}
+			ar rcs ${NAME} ${BONUS_OBJS}
+
 clean:		
-			${RM} ${OBJS}
+			${RM} ${OBJS} ${BONUS_OBJS}
 
 fclean:		clean
 			${RM} ${NAME}
 
 re:		fclean all
 
-.PHONY:		all clean fclean re
+.PHONY:		all bonus clean fclean re
