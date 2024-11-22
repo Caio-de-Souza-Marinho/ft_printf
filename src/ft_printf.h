@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 17:33:10 by caide-so          #+#    #+#             */
-/*   Updated: 2024/11/21 21:31:51 by caide-so         ###   ########.fr       */
+/*   Updated: 2024/11/22 03:16:46 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,9 @@ typedef struct s_format
 	char	specifier;
 	int		width_value;
 	int		precision_value;
-	int		base;
 	int		upper_case;
+	int		base;
+	int		padding_spaces;
 }	t_format;
 
 typedef struct s_data
@@ -53,6 +54,7 @@ int		ft_printf(const char *format, ...);
 // utils
 void	*ft_memset(void *s, int c, size_t n);
 int		in(const char *s, char c);
+int		s_len(const char *s);
 
 // parser
 int		parse_format(t_data *data);
@@ -61,8 +63,10 @@ int		parse_format(t_data *data);
 void	write_buf(t_data *data, char c);
 void	flush_buf(t_data *data);
 void	putchar_buf_n(char c, int n, t_data *data);
+void	putstr_buf_n(char *s, int precision, t_data *data);
 
 // print
 void	printf_char(t_data *data, int c);
+void	printf_str(t_data *data, char *s);
 
 #endif 

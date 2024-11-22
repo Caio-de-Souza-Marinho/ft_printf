@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 14:15:29 by caide-so          #+#    #+#             */
-/*   Updated: 2024/11/21 20:44:15 by caide-so         ###   ########.fr       */
+/*   Updated: 2024/11/22 03:24:21 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,25 @@ void	write_buf(t_data *data, char c)
 	data->buf[data->buffer_index++] = c;
 }
 
-void	putchar_buf_n(char c, int n, t_data *data)
+void	putchar_buf_n(char c, int precision, t_data *data)
 {
-	if (n <= 0)
+	if (precision <= 0)
 		return ;
-	while (n--)
+	while (precision)
+	{
 		write_buf(data, c);
+		precision--;
+	}
+}
+
+void	putstr_buf_n(char *s, int precision, t_data *data)
+{
+	if (precision <= 0)
+		return ;
+	while (precision && *s != '\0')
+	{
+		write_buf(data, *s);
+		precision--;
+		s++;
+	}
 }

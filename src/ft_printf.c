@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 17:13:05 by caide-so          #+#    #+#             */
-/*   Updated: 2024/11/21 20:54:12 by caide-so         ###   ########.fr       */
+/*   Updated: 2024/11/22 02:50:40 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,9 @@ static void	render_format(t_data *data)
 	specifier = data->format.specifier;
 	if (specifier == 'c')
 		printf_char(data, va_arg(data->ap, int));
-	/*
 	else if (specifier == 's')
 		printf_str(data, va_arg(data->ap, char *));
+	/*
 	else if (specifier == 'p')
 		ft_putptr_printf(va_arg(ap, unsigned long), 1);
 	else if (specifier == 'd' || specifier == 'i')

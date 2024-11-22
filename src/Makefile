@@ -7,7 +7,8 @@ SRCS		= ft_printf.c \
 		  parser.c \
 		  ft_printf_utils.c \
 		  buffer.c \
-		  printf_char.c
+		  printf_char.c \
+		  printf_str.c
 
 OBJS		= ${SRCS:.c=.o}
 
