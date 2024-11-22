@@ -18,7 +18,7 @@ int	main(void)
 {
 	//char	*str = "caio";
 	int	num1 = 2042;
-	printf("[%*d]\n[%*d]", 10, num1, 5, num1);
+	printf("[%*d]\n", 10, num1);
 
 	return (0);
 }

@@ -6,7 +6,7 @@
 #include <fcntl.h>
 #include <limits.h>
 
-MU_TEST(test_ft_printf_print_one_char)
+MU_TEST(test_ft_printf_one_char)
 {
 	// ARRANGE
 	char	c = 'a';
@@ -56,7 +56,7 @@ MU_TEST(test_ft_printf_print_one_char)
 	remove("/tmp/test_output.txt");
 }
 
-MU_TEST(test_ft_printf_print_two_chars)
+MU_TEST(test_ft_printf_two_chars)
 {
 	// ARRANGE
 	char	c1 = 'a';
@@ -107,7 +107,7 @@ MU_TEST(test_ft_printf_print_two_chars)
 	remove("/tmp/test_output.txt");
 }
 
-MU_TEST(test_ft_printf_print_one_char_width_of_5)
+MU_TEST(test_ft_printf_one_char_width_of_5)
 {
 	// ARRANGE
 	char	c1 = 'a';
@@ -157,7 +157,7 @@ MU_TEST(test_ft_printf_print_one_char_width_of_5)
 	remove("/tmp/test_output.txt");
 }
 
-MU_TEST(test_ft_printf_print_one_char_width_of_asterisk_value_5)
+MU_TEST(test_ft_printf_one_char_width_of_asterisk_value_5)
 {
 	// ARRANGE
 	char	c1 = 'a';
@@ -206,7 +206,7 @@ MU_TEST(test_ft_printf_print_one_char_width_of_asterisk_value_5)
 	// Clean up the temporary file
 	remove("/tmp/test_output.txt");
 }
-MU_TEST(test_ft_printf_print_one_char_width_of_5_left_aligned)
+MU_TEST(test_ft_printf_one_char_width_of_5_left_aligned)
 {
 	// ARRANGE
 	char	c1 = 'a';
@@ -256,7 +256,7 @@ MU_TEST(test_ft_printf_print_one_char_width_of_5_left_aligned)
 	remove("/tmp/test_output.txt");
 }
 
-MU_TEST(test_ft_printf_print_one_char_width_of_0)
+MU_TEST(test_ft_printf_one_char_width_of_0)
 {
 	// ARRANGE
 	char	c1 = 'a';
@@ -306,7 +306,7 @@ MU_TEST(test_ft_printf_print_one_char_width_of_0)
 	remove("/tmp/test_output.txt");
 }
 
-MU_TEST(test_ft_printf_print_one_newline_char)
+MU_TEST(test_ft_printf_one_newline_char)
 {
 	// ARRANGE
 	char	c1 = '\n';
@@ -356,7 +356,7 @@ MU_TEST(test_ft_printf_print_one_newline_char)
 	remove("/tmp/test_output.txt");
 }
 
-MU_TEST(test_ft_printf_print_null_char)
+MU_TEST(test_ft_printf_null_char)
 {
 	// ARRANGE
 	char	c1 = '\0';
@@ -406,7 +406,7 @@ MU_TEST(test_ft_printf_print_null_char)
 	remove("/tmp/test_output.txt");
 }
 
-MU_TEST(test_ft_printf_print_null_char_with_width)
+MU_TEST(test_ft_printf_null_char_with_width)
 {
 	// ARRANGE
 	char	c1 = '\0';
@@ -456,7 +456,7 @@ MU_TEST(test_ft_printf_print_null_char_with_width)
 	remove("/tmp/test_output.txt");
 }
 
-MU_TEST(test_ft_printf_print_null_char_with_width_and_alignment)
+MU_TEST(test_ft_printf_null_char_with_width_and_alignment)
 {
 	// ARRANGE
 	char	c1 = '\0';
@@ -506,7 +506,7 @@ MU_TEST(test_ft_printf_print_null_char_with_width_and_alignment)
 	remove("/tmp/test_output.txt");
 }
 
-MU_TEST(test_ft_printf_print_tab_char_with_width_and_alignment)
+MU_TEST(test_ft_printf_tab_char_with_width_and_alignment)
 {
 	// ARRANGE
 	char	c1 = '\t';
@@ -556,7 +556,7 @@ MU_TEST(test_ft_printf_print_tab_char_with_width_and_alignment)
 	remove("/tmp/test_output.txt");
 }
 
-MU_TEST(test_ft_printf_print_percent_sign)
+MU_TEST(test_ft_printf_percent_sign)
 {
 	// ARRANGE
 	//char	c1 = '%';
@@ -606,7 +606,7 @@ MU_TEST(test_ft_printf_print_percent_sign)
 	remove("/tmp/test_output.txt");
 }
 
-MU_TEST(test_ft_printf_print_percent_sign_with_width)
+MU_TEST(test_ft_printf_percent_sign_with_width)
 {
 	// ARRANGE
 	//char	c1 = '%';
@@ -656,7 +656,7 @@ MU_TEST(test_ft_printf_print_percent_sign_with_width)
 	remove("/tmp/test_output.txt");
 }
 
-MU_TEST(test_ft_printf_print_percent_sign_with_width_and_left_aligned)
+MU_TEST(test_ft_printf_percent_sign_with_width_and_left_aligned)
 {
 	// ARRANGE
 	//char	c1 = '%';
@@ -706,7 +706,7 @@ MU_TEST(test_ft_printf_print_percent_sign_with_width_and_left_aligned)
 	remove("/tmp/test_output.txt");
 }
 
-MU_TEST(test_ft_printf_print_multiple_percent_signs)
+MU_TEST(test_ft_printf_multiple_percent_signs)
 {
 	// ARRANGE
 	//char	c1 = '%';
@@ -756,7 +756,7 @@ MU_TEST(test_ft_printf_print_multiple_percent_signs)
 	remove("/tmp/test_output.txt");
 }
 
-MU_TEST(test_ft_printf_print_one_char_and_percent_sign)
+MU_TEST(test_ft_printf_one_char_and_percent_sign)
 {
 	// ARRANGE
 	char	c1 = 'c';
@@ -806,7 +806,7 @@ MU_TEST(test_ft_printf_print_one_char_and_percent_sign)
 	remove("/tmp/test_output.txt");
 }
 
-MU_TEST(test_ft_printf_print_char_with_zero_flag)
+MU_TEST(test_ft_printf_char_with_zero_flag)
 {
 	// ARRANGE
 	char	c1 = 'c';
@@ -856,7 +856,7 @@ MU_TEST(test_ft_printf_print_char_with_zero_flag)
 	remove("/tmp/test_output.txt");
 }
 
-MU_TEST(test_ft_printf_print_char_with_plus_flag)
+MU_TEST(test_ft_printf_char_with_plus_flag)
 {
 	// ARRANGE
 	char	c1 = 'c';
@@ -906,7 +906,7 @@ MU_TEST(test_ft_printf_print_char_with_plus_flag)
 	remove("/tmp/test_output.txt");
 }
 
-MU_TEST(test_ft_printf_print_char_with_space_flag)
+MU_TEST(test_ft_printf_char_with_space_flag)
 {
 	// ARRANGE
 	char	c1 = 'c';
@@ -956,7 +956,7 @@ MU_TEST(test_ft_printf_print_char_with_space_flag)
 	remove("/tmp/test_output.txt");
 }
 
-MU_TEST(test_ft_printf_print_char_with_large_width)
+MU_TEST(test_ft_printf_char_with_large_width)
 {
 	// ARRANGE
 	char	c1 = 'c';
@@ -1006,7 +1006,7 @@ MU_TEST(test_ft_printf_print_char_with_large_width)
 	remove("/tmp/test_output.txt");
 }
 
-MU_TEST(test_ft_printf_print_char_with_invalid_flag_combinations)
+MU_TEST(test_ft_printf_char_with_invalid_flag_combinations)
 {
 	// ARRANGE
 	char	c1 = 'c';
@@ -1055,28 +1055,28 @@ MU_TEST(test_ft_printf_print_char_with_invalid_flag_combinations)
 	// Clean up the temporary file
 	remove("/tmp/test_output.txt");
 }
+
 MU_TEST_SUITE(ft_printf_c_and_percent_sign_test_suite)
 {
-	MU_RUN_TEST(test_ft_printf_print_one_char);
-	MU_RUN_TEST(test_ft_printf_print_two_chars);
-	MU_RUN_TEST(test_ft_printf_print_one_char_width_of_5);
-	MU_RUN_TEST(test_ft_printf_print_one_char_width_of_asterisk_value_5);
-	MU_RUN_TEST(test_ft_printf_print_one_char_width_of_5_left_aligned);
-	MU_RUN_TEST(test_ft_printf_print_one_char_width_of_0);
-	MU_RUN_TEST(test_ft_printf_print_one_newline_char);
-	MU_RUN_TEST(test_ft_printf_print_null_char);
-	MU_RUN_TEST(test_ft_printf_print_null_char_with_width);
-	MU_RUN_TEST(test_ft_printf_print_null_char_with_width_and_alignment);
-	MU_RUN_TEST(test_ft_printf_print_tab_char_with_width_and_alignment);
-	MU_RUN_TEST(test_ft_printf_print_percent_sign);
-	MU_RUN_TEST(test_ft_printf_print_percent_sign_with_width);
-	MU_RUN_TEST(test_ft_printf_print_percent_sign_with_width_and_left_aligned);
-	MU_RUN_TEST(test_ft_printf_print_multiple_percent_signs);
-	MU_RUN_TEST(test_ft_printf_print_one_char_and_percent_sign);
-	MU_RUN_TEST(test_ft_printf_print_char_with_zero_flag);
-	MU_RUN_TEST(test_ft_printf_print_char_with_plus_flag);
-	MU_RUN_TEST(test_ft_printf_print_char_with_space_flag);
-	MU_RUN_TEST(test_ft_printf_print_char_with_large_width);
-	MU_RUN_TEST(test_ft_printf_print_char_with_invalid_flag_combinations);
-
+	MU_RUN_TEST(test_ft_printf_one_char);
+	MU_RUN_TEST(test_ft_printf_two_chars);
+	MU_RUN_TEST(test_ft_printf_one_char_width_of_5);
+	MU_RUN_TEST(test_ft_printf_one_char_width_of_asterisk_value_5);
+	MU_RUN_TEST(test_ft_printf_one_char_width_of_5_left_aligned);
+	MU_RUN_TEST(test_ft_printf_one_char_width_of_0);
+	MU_RUN_TEST(test_ft_printf_one_newline_char);
+	MU_RUN_TEST(test_ft_printf_null_char);
+	MU_RUN_TEST(test_ft_printf_null_char_with_width);
+	MU_RUN_TEST(test_ft_printf_null_char_with_width_and_alignment);
+	MU_RUN_TEST(test_ft_printf_tab_char_with_width_and_alignment);
+	MU_RUN_TEST(test_ft_printf_percent_sign);
+	MU_RUN_TEST(test_ft_printf_percent_sign_with_width);
+	MU_RUN_TEST(test_ft_printf_percent_sign_with_width_and_left_aligned);
+	MU_RUN_TEST(test_ft_printf_multiple_percent_signs);
+	MU_RUN_TEST(test_ft_printf_one_char_and_percent_sign);
+	MU_RUN_TEST(test_ft_printf_char_with_zero_flag);
+	MU_RUN_TEST(test_ft_printf_char_with_plus_flag);
+	MU_RUN_TEST(test_ft_printf_char_with_space_flag);
+	MU_RUN_TEST(test_ft_printf_char_with_large_width);
+	MU_RUN_TEST(test_ft_printf_char_with_invalid_flag_combinations);
 }
