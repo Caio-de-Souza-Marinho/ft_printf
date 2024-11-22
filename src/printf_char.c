@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 15:13:02 by caide-so          #+#    #+#             */
-/*   Updated: 2024/11/21 21:18:29 by caide-so         ###   ########.fr       */
+/*   Updated: 2024/11/22 02:00:42 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	printf_char(t_data *data, int c)
 	int	width;
 
 	width = data->format.width_value;
-	if (width > 1)
+	if (width > 1 && data->format.specifier != '%')
 	{
 		if (data->format.left_justified)
 		{
