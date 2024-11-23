@@ -4,8 +4,8 @@ CFLAGS	= -Wall -Wextra -Werror
 RM	= rm -f
 
 SRCS		= ft_printf.c \
-		  parser.c \
 		  ft_printf_utils.c \
+		  parser.c \
 		  buffer.c \
 		  printf_char.c \
 		  printf_str.c
@@ -13,10 +13,11 @@ SRCS		= ft_printf.c \
 OBJS		= ${SRCS:.c=.o}
 
 BONUS 		= ft_printf.c \
-		  parser.c \
 		  ft_printf_utils.c \
+		  parser.c \
 		  buffer.c \
-		  printf_char.c
+		  printf_char.c \
+		  printf_str.c
 
 BONUS_OBJS 	= ${BONUS:.c=.o}
 

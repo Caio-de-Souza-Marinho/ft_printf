@@ -6,10 +6,11 @@ TESTPROGRAM	= printf.tests
 SRCDIR		= ../src/
 
 SRCS		= ${SRCDIR}ft_printf.c \
-		  ${SRCDIR}parser.c \
 		  ${SRCDIR}ft_printf_utils.c \
+		  ${SRCDIR}parser.c \
 		  ${SRCDIR}buffer.c \
-		  ${SRCDIR}printf_char.c
+		  ${SRCDIR}printf_char.c \
+		  ${SRCDIR}printf_str.c
 
 OBJS		= ${SRCS:.c=.o}
 
