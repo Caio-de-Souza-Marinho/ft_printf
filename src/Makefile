@@ -8,7 +8,8 @@ SRCS		= ft_printf.c \
 		  parser.c \
 		  buffer.c \
 		  printf_char.c \
-		  printf_str.c
+		  printf_str.c \
+		  printf_int.c
 
 OBJS		= ${SRCS:.c=.o}
 
@@ -17,7 +18,8 @@ BONUS 		= ft_printf.c \
 		  parser.c \
 		  buffer.c \
 		  printf_char.c \
-		  printf_str.c
+		  printf_str.c \
+		  printf_int.c
 
 BONUS_OBJS 	= ${BONUS:.c=.o}
 

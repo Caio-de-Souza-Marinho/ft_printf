@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 17:13:05 by caide-so          #+#    #+#             */
-/*   Updated: 2024/11/22 02:50:40 by caide-so         ###   ########.fr       */
+/*   Updated: 2024/11/23 21:52:21 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static int	init_data(t_data *data, const char *format);
 static void	render_format(t_data *data);
+static void	render_format_c_s(t_data *data, char specifier);
 
 int	ft_printf(const char *format, ...)
 {
@@ -59,25 +60,35 @@ static int	init_data(t_data *data, const char *format)
 // Wrapper for all rendering functions
 static void	render_format(t_data *data)
 {
-	char	specifier;
+	char		specifier;
+	t_union_int	int_values;
 
 	specifier = data->format.specifier;
-	if (specifier == 'c')
+	int_values.int64 = 0;
+	render_format_c_s(data, specifier);
+	if (in("pdiuxX", specifier))
+	{
+		if (in("di", specifier))
+		{
+			int_values.int64 = (long)va_arg(data->ap, int);
+			data->format.signed_value = 1;
+			if (int_values.int64 < 0)
+				data->format.is_negative = 1;
+		}
+		else if (in("p", specifier))
+			int_values.uint64 = (unsigned long)va_arg(data->ap, void *);
+		else if (in("uxX", specifier))
+			int_values.uint64 = (unsigned long)va_arg(data->ap, unsigned int);
+		printf_int(data, int_values);
+	}
+}
+
+static void	render_format_c_s(t_data *data, char specifier)
+{
+	if (specifier == '%')
+		printf_char(data, '%');
+	else if (specifier == 'c')
 		printf_char(data, va_arg(data->ap, int));
 	else if (specifier == 's')
 		printf_str(data, va_arg(data->ap, char *));
-	/*
-	else if (specifier == 'p')
-		ft_putptr_printf(va_arg(ap, unsigned long), 1);
-	else if (specifier == 'd' || specifier == 'i')
-		ft_putnbr_printf(va_arg(ap, int), 1);
-	else if (specifier == 'u')
-		ft_putunbr_printf(va_arg(ap, unsigned int), 1);
-	else if (specifier == 'x')
-		ft_puthex_printf(va_arg(ap, unsigned int), 1, 'l');
-	else if (specifier == 'X')
-		ft_puthex_printf(va_arg(ap, unsigned int), 1, 'u');
-	*/
-	else if (specifier == '%')
-		printf_char(data, '%');
 }

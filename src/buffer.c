@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 14:15:29 by caide-so          #+#    #+#             */
-/*   Updated: 2024/11/22 03:24:21 by caide-so         ###   ########.fr       */
+/*   Updated: 2024/11/24 20:10:27 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,33 @@ void	putstr_buf_n(char *s, int precision, t_data *data)
 		write_buf(data, *s);
 		precision--;
 		s++;
+	}
+}
+
+void	itoa_buf(t_data *data, t_union_int int_values)
+{
+	t_union_int	tmp_int_values;
+
+	if (data->format.is_negative && !data->format.is_converted)
+	{
+		int_values.int64 = -(int_values.int64);
+		data->format.is_converted = 1;
+		itoa_buf(data, int_values);
+	}
+	else if (int_values.uint64 < (unsigned long)data->format.base)
+	{
+		if (data->format.upper_case)
+			data->format.buf_temp[data->format.nbr_len++]
+				= UP_HEX[int_values.uint64];
+		else
+			data->format.buf_temp[data->format.nbr_len++]
+				= LOW_HEX[int_values.uint64];
+	}
+	else
+	{
+		tmp_int_values.uint64 = int_values.uint64 / data->format.base;
+		itoa_buf(data, tmp_int_values);
+		tmp_int_values.uint64 = int_values.uint64 % data->format.base;
+		itoa_buf(data, tmp_int_values);
 	}
 }

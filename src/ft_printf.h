@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 17:33:10 by caide-so          #+#    #+#             */
-/*   Updated: 2024/11/22 03:16:46 by caide-so         ###   ########.fr       */
+/*   Updated: 2024/11/24 19:49:04 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,14 @@
 # define FLAGS "+- 0#"
 # define NUMBERS "0123456789"
 # define SPECIFIERS "cspdiuxX%"
+# define LOW_HEX "0123456789abcdef"
+# define UP_HEX "0123456789ABCDEF"
+
+typedef union t_union_int
+{
+	unsigned long	uint64;
+	long			int64;
+}	t_union_int;
 
 typedef struct s_format
 {
@@ -32,9 +40,15 @@ typedef struct s_format
 	char	specifier;
 	int		width_value;
 	int		precision_value;
+	char	buf_temp[64];
+	int		nbr_len;
 	int		upper_case;
 	int		base;
 	int		padding_spaces;
+	int		padding_zeros;
+	int		signed_value;
+	int		is_negative;
+	int		is_converted;
 }	t_format;
 
 typedef struct s_data
@@ -64,9 +78,11 @@ void	write_buf(t_data *data, char c);
 void	flush_buf(t_data *data);
 void	putchar_buf_n(char c, int n, t_data *data);
 void	putstr_buf_n(char *s, int precision, t_data *data);
+void	itoa_buf(t_data *data, t_union_int int_values);
 
 // print
 void	printf_char(t_data *data, int c);
 void	printf_str(t_data *data, char *s);
+void	printf_int(t_data *data, t_union_int int_values);
 
 #endif 

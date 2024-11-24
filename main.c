@@ -14,11 +14,20 @@
 #include <stdio.h>
 #include <limits.h>
 
-int	main(void)
-{
-	//char	*str = "caio";
-	int	num1 = 2042;
-	printf("[%*d]\n", 10, num1);
+#include <stdio.h>
 
-	return (0);
+typedef union
+{
+    unsigned long uint64;
+    long int64;
+} int_union;
+
+int main() {
+    int_union u;
+    u.uint64 = 0xFFFFFFFFFFFFFFFF;
+
+    printf("Unsigned: %lu\n", u.uint64); // Access as unsigned long
+    printf("Signed: %ld\n", u.int64);   // Access as signed long (type punning)
+
+    return 0;
 }

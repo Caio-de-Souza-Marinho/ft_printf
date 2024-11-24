@@ -10,7 +10,8 @@ SRCS		= ${SRCDIR}ft_printf.c \
 		  ${SRCDIR}parser.c \
 		  ${SRCDIR}buffer.c \
 		  ${SRCDIR}printf_char.c \
-		  ${SRCDIR}printf_str.c
+		  ${SRCDIR}printf_str.c \
+		  ${SRCDIR}printf_int.c
 
 OBJS		= ${SRCS:.c=.o}
 
