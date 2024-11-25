@@ -17,9 +17,11 @@
 
 int	main(void)
 {
-	ft_printf("[%020p]\n", NULL);
-	printf("[%020p]\n", NULL);
+	int	num1 = 42;
+	int	num2 = -42;
+	ft_printf("[%50d]\n", num1);
+	printf("[%50d]\n", num1);
 
-	ft_printf("[%-020p]\n", NULL);
-	printf("[%-020p]\n", NULL);
+	ft_printf("[%50d]\n", num2);
+	printf("[%50d]\n", num2);
 }
