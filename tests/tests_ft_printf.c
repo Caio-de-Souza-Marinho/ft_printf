@@ -9,7 +9,6 @@
 #include "tests_ft_printf_c_and_%.c"
 #include "tests_ft_printf_s.c"
 
-/*
 MU_TEST(test_ft_printf_print_one_pointer)
 {
 	// ARRANGE
@@ -113,6 +112,7 @@ MU_TEST(test_ft_printf_p_flag_null_pointer)
 	remove("/tmp/test_output.txt");
 }
 
+/*
 MU_TEST(test_ft_printf_print_percent_sign)
 {
 	// ARRANGE
@@ -677,13 +677,9 @@ MU_TEST(test_ft_printf_print_mix)
 
 MU_TEST_SUITE(ft_printf_test_suite)
 {
-/*
-	MU_RUN_TEST(test_ft_printf_print_one_string);
-	MU_RUN_TEST(test_ft_printf_print_two_strings);
-	MU_RUN_TEST(test_ft_printf_s_flag_null_pointer);
 	MU_RUN_TEST(test_ft_printf_print_one_pointer);
 	MU_RUN_TEST(test_ft_printf_p_flag_null_pointer);
-	MU_RUN_TEST(test_ft_printf_print_percent_sign);
+/*
 	MU_RUN_TEST(test_ft_printf_print_one_int);
 	MU_RUN_TEST(test_ft_printf_print_one_positive_int_and_one_normal);
 	MU_RUN_TEST(test_ft_printf_print_int_max);

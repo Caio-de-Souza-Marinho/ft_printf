@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 21:49:10 by caide-so          #+#    #+#             */
-/*   Updated: 2024/11/24 19:54:15 by caide-so         ###   ########.fr       */
+/*   Updated: 2024/11/24 21:57:11 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,18 @@ void	printf_int(t_data *data, t_union_int int_values)
 	itoa_buf(data, int_values);
 	set_padding_zeros(data);
 	set_padding_spaces(data);
+	if (data->format.specifier == 'p' && int_values.uint64 == 0)
+	{
+		putstr_buf_n("(nil)", 5, data);
+		return ;
+	}
 	if (data->format.left_justified)
 	{
 		put_sign(data);
 		putchar_buf_n('0', data->format.padding_zeros, data);
 		putstr_buf_n(data->format.buf_temp, data->format.nbr_len, data);
 		putchar_buf_n(' ', data->format.padding_spaces, data);
+		return ;
 	}
 	else
 	{
@@ -35,6 +41,7 @@ void	printf_int(t_data *data, t_union_int int_values)
 		put_sign(data);
 		putchar_buf_n('0', data->format.padding_zeros, data);
 		putstr_buf_n(data->format.buf_temp, data->format.nbr_len, data);
+		return ;
 	}
 }
 
@@ -49,12 +56,15 @@ static void	set_padding_zeros(t_data *data)
 			return ;
 		}
 	}
-	if (data->format.zero_pad)
+	if (data->format.specifier == 'p')
 	{
-		if (data->format.left_justified)
-			return ;
+		data->format.padding_zeros = data->format.width_value
+			- data->format.nbr_len - 2;
+		if (data->format.padding_zeros < 0)
+			data->format.padding_zeros = 0;
+		return ;
 	}
-	if (data->format.width_value > data->format.nbr_len)
+	if (data->format.zero_pad && !data->format.left_justified)
 		data->format.padding_zeros = data->format.width_value
 			- data->format.nbr_len;
 	set_padding_zeros_pt_2(data);
@@ -65,43 +75,33 @@ static void	set_padding_zeros_pt_2(t_data *data)
 	if (data->format.specifier == 'u')
 		return ;
 	else if ((in("xX", data->format.specifier) && data->format.hash
-			&& data->format.buf_temp[0] != '0')
-		|| data->format.specifier == 'p')
+			&& data->format.buf_temp[0] != '0'))
 		data->format.padding_zeros -= 2;
 	else if (data->format.is_negative || (!data->format.is_negative
 			&& (data->format.plus || data->format.space)))
 		data->format.padding_zeros--;
 	if (data->format.padding_zeros < 0)
 		data->format.padding_zeros = 0;
+	return ;
 }
 
 static void	set_padding_spaces(t_data *data)
 {
 	data->format.padding_spaces = data->format.width_value
 		- data->format.padding_zeros - data->format.nbr_len;
-	if (in("puxX", data->format.specifier))
+	if (data->format.specifier == 'p')
 	{
-		if ((in("xX", data->format.specifier) && data->format.hash
-				&& data->format.buf_temp[0] != '0')
-			|| data->format.specifier == 'p')
-			data->format.padding_zeros -= 2;
+		data->format.padding_spaces -= 2;
+		if (data->format.padding_spaces < 0)
+			data->format.padding_spaces = 0;
 		return ;
 	}
-	if (data->format.is_negative)
-	{
+	if (in("xX", data->format.specifier) && data->format.hash && data->format.buf_temp[0] != '0')
+		data->format.padding_zeros -= 2;
+	if (data->format.is_negative || (!data->format.is_negative && (data->format.plus || data->format.space)))
 		data->format.padding_spaces--;
-		return ;
-	}
-	if (!data->format.is_negative && data->format.plus)
-	{
-		data->format.padding_spaces--;
-		return ;
-	}
-	if (!data->format.is_negative && data->format.space)
-	{
-		data->format.padding_spaces--;
-		return ;
-	}
+	if (data->format.padding_spaces < 0)
+		data->format.padding_spaces = 0;
 }
 
 static void	put_sign(t_data *data)
