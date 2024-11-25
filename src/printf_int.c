@@ -24,7 +24,7 @@ void	printf_int(t_data *data, t_union_int int_values)
 	set_padding_spaces(data);
 	if (data->format.specifier == 'p' && int_values.uint64 == 0)
 	{
-		putstr_buf_n("(nil)", 5, data);
+		printf_str(data, "(nil)");
 		return ;
 	}
 	if (data->format.left_justified)
