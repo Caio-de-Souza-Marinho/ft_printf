@@ -17,14 +17,9 @@
 
 int	main(void)
 {
-	ft_printf("[%-11p %-12p]\n", (void *)INT_MIN, (void *)INT_MAX);
-	printf("[%-11p %-12p]\n", (void *)INT_MIN, (void *)INT_MAX);
+	ft_printf("[%020p]\n", NULL);
+	printf("[%020p]\n", NULL);
 
-	ft_printf("[%-13p %-14p]\n", (void *)ULONG_MAX, (void *)-ULONG_MAX);
-	printf("[%-13p %-14p]\n", (void *)ULONG_MAX, (void *)-ULONG_MAX);
+	ft_printf("[%-020p]\n", NULL);
+	printf("[%-020p]\n", NULL);
 }
-
-/*
-TEST(27, print(" %-11p %-12p ", INT_MIN, INT_MAX));
-TEST(28, print(" %-13p %-14p ", ULONG_MAX, -ULONG_MAX));
-*/

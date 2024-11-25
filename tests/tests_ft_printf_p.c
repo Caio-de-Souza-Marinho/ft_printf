@@ -6,19 +6,18 @@
 #include <fcntl.h>
 #include <limits.h>
 
-#include "tests_ft_printf_c_and_%.c"
-#include "tests_ft_printf_s.c"
-#include "tests_ft_printf_p.c"
-
-MU_TEST(test_ft_printf_print_one_int)
+MU_TEST(test_ft_printf_one_pointer)
 {
 	// ARRANGE
-	int	num = 0;
-	char	expected_output[] = "0";
-	int	expected_return_value = 1;  // Expected number of characters printed
+	char	*ptr = (void *)0x1234abcd; // Example pointer to test
+	char	expected_output[100];
+	int	expected_return_value;  // Expected number of characters printed
 	char	buffer[100];
 	int	temp_fd;
 	int	saved_stdout;
+
+	// Create the expected output using snprintf
+	expected_return_value = snprintf(expected_output, sizeof(expected_output), "%p", ptr);
 
 	// Save the current stdout file descriptor
 	saved_stdout = dup(STDOUT_FILENO);
@@ -35,7 +34,7 @@ MU_TEST(test_ft_printf_print_one_int)
 	}
 
 	// ACT
-	int	actual_return_value = ft_printf("%d", num);
+	int	actual_return_value = ft_printf("%p", ptr);
 
 	// Reset stdout to its original value
 	fflush(stdout);
@@ -60,12 +59,117 @@ MU_TEST(test_ft_printf_print_one_int)
 	remove("/tmp/test_output.txt");
 }
 
-MU_TEST(test_ft_printf_print_one_positive_int_and_one_normal)
+MU_TEST(test_ft_printf_one_pointer_with_width)
 {
 	// ARRANGE
-	int	num1 = 42;
-	int	num2 = -42;
-	char	expected_output[] = "42-42";
+	char	*ptr = (void *)0x1234abcd; // Example pointer to test
+	char	expected_output[100];
+	int	expected_return_value;  // Expected number of characters printed
+	char	buffer[100];
+	int	temp_fd;
+	int	saved_stdout;
+
+	// Create the expected output using snprintf
+	expected_return_value = snprintf(expected_output, sizeof(expected_output), "%20p", ptr);
+
+	// Save the current stdout file descriptor
+	saved_stdout = dup(STDOUT_FILENO);
+
+	// Create a temporary file and get its file descriptor
+	temp_fd = open("/tmp/test_output.txt", O_RDWR | O_CREAT | O_TRUNC, 0666);
+	if (temp_fd == -1) {
+		mu_fail("Failed to open temporary file");
+	}
+
+	// Redirect stdout to the temporary file
+	if (dup2(temp_fd, STDOUT_FILENO) == -1) {
+		mu_fail("Failed to redirect stdout");
+	}
+
+	// ACT
+	int	actual_return_value = ft_printf("%20p", ptr);
+
+	// Reset stdout to its original value
+	fflush(stdout);
+	dup2(saved_stdout, STDOUT_FILENO);  // Restore the original stdout
+	close(saved_stdout);
+	close(temp_fd);
+
+	// Read the content of the temporary file
+	FILE	*temp_file = fopen("/tmp/test_output.txt", "r");
+	if (!temp_file) {
+		mu_fail("Failed to open temporary file for reading");
+	}
+	size_t	bytes_read = fread(buffer, 1, sizeof(buffer) - 1, temp_file);
+	buffer[bytes_read] = '\0';  // Null-terminate the string read
+	fclose(temp_file);
+
+	// ASSERT
+	mu_assert_string_eq(expected_output, buffer);  // Check printed output
+	mu_assert_int_eq(expected_return_value, actual_return_value);  // Check return value
+
+	// Clean up the temporary file
+	remove("/tmp/test_output.txt");
+}
+
+MU_TEST(test_ft_printf_one_pointer_with_left_alignment)
+{
+	// ARRANGE
+	char	*ptr = (void *)0x1234abcd; // Example pointer to test
+	char	expected_output[100];
+	int	expected_return_value;  // Expected number of characters printed
+	char	buffer[100];
+	int	temp_fd;
+	int	saved_stdout;
+
+	// Create the expected output using snprintf
+	expected_return_value = snprintf(expected_output, sizeof(expected_output), "%-20p", ptr);
+
+	// Save the current stdout file descriptor
+	saved_stdout = dup(STDOUT_FILENO);
+
+	// Create a temporary file and get its file descriptor
+	temp_fd = open("/tmp/test_output.txt", O_RDWR | O_CREAT | O_TRUNC, 0666);
+	if (temp_fd == -1) {
+		mu_fail("Failed to open temporary file");
+	}
+
+	// Redirect stdout to the temporary file
+	if (dup2(temp_fd, STDOUT_FILENO) == -1) {
+		mu_fail("Failed to redirect stdout");
+	}
+
+	// ACT
+	int	actual_return_value = ft_printf("%-20p", ptr);
+
+	// Reset stdout to its original value
+	fflush(stdout);
+	dup2(saved_stdout, STDOUT_FILENO);  // Restore the original stdout
+	close(saved_stdout);
+	close(temp_fd);
+
+	// Read the content of the temporary file
+	FILE	*temp_file = fopen("/tmp/test_output.txt", "r");
+	if (!temp_file) {
+		mu_fail("Failed to open temporary file for reading");
+	}
+	size_t	bytes_read = fread(buffer, 1, sizeof(buffer) - 1, temp_file);
+	buffer[bytes_read] = '\0';  // Null-terminate the string read
+	fclose(temp_file);
+
+	// ASSERT
+	mu_assert_string_eq(expected_output, buffer);  // Check printed output
+	mu_assert_int_eq(expected_return_value, actual_return_value);  // Check return value
+
+	// Clean up the temporary file
+	remove("/tmp/test_output.txt");
+}
+
+MU_TEST(test_ft_printf_null_pointer)
+{
+	// ARRANGE
+	void	*ptr = NULL;
+	char	expected_output[] = "(nil)";
 	int	expected_return_value = 5;  // Expected number of characters printed
 	char	buffer[100];
 	int	temp_fd;
@@ -86,7 +190,7 @@ MU_TEST(test_ft_printf_print_one_positive_int_and_one_normal)
 	}
 
 	// ACT
-	int	actual_return_value = ft_printf("%d%d", num1, num2);
+	int	actual_return_value = ft_printf("%p", ptr);
 
 	// Reset stdout to its original value
 	fflush(stdout);
@@ -111,11 +215,11 @@ MU_TEST(test_ft_printf_print_one_positive_int_and_one_normal)
 	remove("/tmp/test_output.txt");
 }
 
-MU_TEST(test_ft_printf_print_int_max)
+MU_TEST(test_ft_printf_null_pointer_with_width)
 {
 	// ARRANGE
-	int	num = INT_MAX;
-	char	expected_output[] = "2147483647";
+	void	*ptr = NULL;
+	char	expected_output[] = "     (nil)";
 	int	expected_return_value = 10;  // Expected number of characters printed
 	char	buffer[100];
 	int	temp_fd;
@@ -136,7 +240,7 @@ MU_TEST(test_ft_printf_print_int_max)
 	}
 
 	// ACT
-	int	actual_return_value = ft_printf("%d", num);
+	int	actual_return_value = ft_printf("%10p", ptr);
 
 	// Reset stdout to its original value
 	fflush(stdout);
@@ -161,111 +265,11 @@ MU_TEST(test_ft_printf_print_int_max)
 	remove("/tmp/test_output.txt");
 }
 
-MU_TEST(test_ft_printf_print_int_min)
+MU_TEST(test_ft_printf_null_pointer_with_left_alignment)
 {
 	// ARRANGE
-	int	num = INT_MIN;
-	char	expected_output[] = "-2147483648";
-	int	expected_return_value = 11;  // Expected number of characters printed
-	char	buffer[100];
-	int	temp_fd;
-	int	saved_stdout;
-
-	// Save the current stdout file descriptor
-	saved_stdout = dup(STDOUT_FILENO);
-
-	// Create a temporary file and get its file descriptor
-	temp_fd = open("/tmp/test_output.txt", O_RDWR | O_CREAT | O_TRUNC, 0666);
-	if (temp_fd == -1) {
-		mu_fail("Failed to open temporary file");
-	}
-
-	// Redirect stdout to the temporary file
-	if (dup2(temp_fd, STDOUT_FILENO) == -1) {
-		mu_fail("Failed to redirect stdout");
-	}
-
-	// ACT
-	int	actual_return_value = ft_printf("%d", num);
-
-	// Reset stdout to its original value
-	fflush(stdout);
-	dup2(saved_stdout, STDOUT_FILENO);  // Restore the original stdout
-	close(saved_stdout);
-	close(temp_fd);
-
-	// Read the content of the temporary file
-	FILE	*temp_file = fopen("/tmp/test_output.txt", "r");
-	if (!temp_file) {
-		mu_fail("Failed to open temporary file for reading");
-	}
-	size_t	bytes_read = fread(buffer, 1, sizeof(buffer) - 1, temp_file);
-	buffer[bytes_read] = '\0';  // Null-terminate the string read
-	fclose(temp_file);
-
-	// ASSERT
-	mu_assert_string_eq(expected_output, buffer);  // Check printed output
-	mu_assert_int_eq(expected_return_value, actual_return_value);  // Check return value
-
-	// Clean up the temporary file
-	remove("/tmp/test_output.txt");
-}
-
-MU_TEST(test_ft_printf_print_int_max_plus_one)
-{
-	// ARRANGE
-	int	num = INT_MAX;
-	char	expected_output[] = "-2147483648";
-	int	expected_return_value = 11;  // Expected number of characters printed
-	char	buffer[100];
-	int	temp_fd;
-	int	saved_stdout;
-
-	// Save the current stdout file descriptor
-	saved_stdout = dup(STDOUT_FILENO);
-
-	// Create a temporary file and get its file descriptor
-	temp_fd = open("/tmp/test_output.txt", O_RDWR | O_CREAT | O_TRUNC, 0666);
-	if (temp_fd == -1) {
-		mu_fail("Failed to open temporary file");
-	}
-
-	// Redirect stdout to the temporary file
-	if (dup2(temp_fd, STDOUT_FILENO) == -1) {
-		mu_fail("Failed to redirect stdout");
-	}
-
-	// ACT
-	int	actual_return_value = ft_printf("%d", num + 1);
-
-	// Reset stdout to its original value
-	fflush(stdout);
-	dup2(saved_stdout, STDOUT_FILENO);  // Restore the original stdout
-	close(saved_stdout);
-	close(temp_fd);
-
-	// Read the content of the temporary file
-	FILE	*temp_file = fopen("/tmp/test_output.txt", "r");
-	if (!temp_file) {
-		mu_fail("Failed to open temporary file for reading");
-	}
-	size_t	bytes_read = fread(buffer, 1, sizeof(buffer) - 1, temp_file);
-	buffer[bytes_read] = '\0';  // Null-terminate the string read
-	fclose(temp_file);
-
-	// ASSERT
-	mu_assert_string_eq(expected_output, buffer);  // Check printed output
-	mu_assert_int_eq(expected_return_value, actual_return_value);  // Check return value
-
-	// Clean up the temporary file
-	remove("/tmp/test_output.txt");
-}
-
-MU_TEST(test_ft_printf_print_int_min_minus_one)
-{
-	// ARRANGE
-	int	num = INT_MIN;
-	char	expected_output[] = "2147483647";
+	void	*ptr = NULL;
+	char	expected_output[] = "(nil)     ";
 	int	expected_return_value = 10;  // Expected number of characters printed
 	char	buffer[100];
 	int	temp_fd;
@@ -286,7 +290,7 @@ MU_TEST(test_ft_printf_print_int_min_minus_one)
 	}
 
 	// ACT
-	int	actual_return_value = ft_printf("%d", num - 1);
+	int	actual_return_value = ft_printf("%-10p", ptr);
 
 	// Reset stdout to its original value
 	fflush(stdout);
@@ -311,175 +315,18 @@ MU_TEST(test_ft_printf_print_int_min_minus_one)
 	remove("/tmp/test_output.txt");
 }
 
-MU_TEST(test_ft_printf_print_two_unsigned_int_int_max_and_int_min)
+MU_TEST(test_ft_printf_one_pointer_with_small_width)
 {
 	// ARRANGE
-	unsigned int	num1 = INT_MIN;
-	unsigned int	num2 = INT_MAX;
-	char		expected_output[] = "21474836482147483647";
-	int		expected_return_value = 20;  // Expected number of characters printed
-	char		buffer[100];
-	int		temp_fd;
-	int		saved_stdout;
-
-	// Save the current stdout file descriptor
-	saved_stdout = dup(STDOUT_FILENO);
-
-	// Create a temporary file and get its file descriptor
-	temp_fd = open("/tmp/test_output.txt", O_RDWR | O_CREAT | O_TRUNC, 0666);
-	if (temp_fd == -1) {
-		mu_fail("Failed to open temporary file");
-	}
-
-	// Redirect stdout to the temporary file
-	if (dup2(temp_fd, STDOUT_FILENO) == -1) {
-		mu_fail("Failed to redirect stdout");
-	}
-
-	// ACT
-	int	actual_return_value = ft_printf("%u%u", num1, num2);
-
-	// Reset stdout to its original value
-	fflush(stdout);
-	dup2(saved_stdout, STDOUT_FILENO);  // Restore the original stdout
-	close(saved_stdout);
-	close(temp_fd);
-
-	// Read the content of the temporary file
-	FILE	*temp_file = fopen("/tmp/test_output.txt", "r");
-	if (!temp_file) {
-		mu_fail("Failed to open temporary file for reading");
-	}
-	size_t	bytes_read = fread(buffer, 1, sizeof(buffer) - 1, temp_file);
-	buffer[bytes_read] = '\0';  // Null-terminate the string read
-	fclose(temp_file);
-
-	// ASSERT
-	mu_assert_string_eq(expected_output, buffer);  // Check printed output
-	mu_assert_int_eq(expected_return_value, actual_return_value);  // Check return value
-
-	// Clean up the temporary file
-	remove("/tmp/test_output.txt");
-}
-
-MU_TEST(test_ft_printf_print_one_number_x_specifier)
-{
-	// ARRANGE
-	unsigned int	num = 42;
-	char		expected_output[] = "2a";
-	int		expected_return_value = 2;  // Expected number of characters printed
-	char		buffer[100];
-	int		temp_fd;
-	int		saved_stdout;
-
-	// Save the current stdout file descriptor
-	saved_stdout = dup(STDOUT_FILENO);
-
-	// Create a temporary file and get its file descriptor
-	temp_fd = open("/tmp/test_output.txt", O_RDWR | O_CREAT | O_TRUNC, 0666);
-	if (temp_fd == -1) {
-		mu_fail("Failed to open temporary file");
-	}
-
-	// Redirect stdout to the temporary file
-	if (dup2(temp_fd, STDOUT_FILENO) == -1) {
-		mu_fail("Failed to redirect stdout");
-	}
-
-	// ACT
-	int	actual_return_value = ft_printf("%x", num);
-
-	// Reset stdout to its original value
-	fflush(stdout);
-	dup2(saved_stdout, STDOUT_FILENO);  // Restore the original stdout
-	close(saved_stdout);
-	close(temp_fd);
-
-	// Read the content of the temporary file
-	FILE	*temp_file = fopen("/tmp/test_output.txt", "r");
-	if (!temp_file) {
-		mu_fail("Failed to open temporary file for reading");
-	}
-	size_t	bytes_read = fread(buffer, 1, sizeof(buffer) - 1, temp_file);
-	buffer[bytes_read] = '\0';  // Null-terminate the string read
-	fclose(temp_file);
-
-	// ASSERT
-	mu_assert_string_eq(expected_output, buffer);  // Check printed output
-	mu_assert_int_eq(expected_return_value, actual_return_value);  // Check return value
-
-	// Clean up the temporary file
-	remove("/tmp/test_output.txt");
-}
-
-MU_TEST(test_ft_printf_print_one_number_X_specifier)
-{
-	// ARRANGE
-	unsigned int	num = 42;
-	char		expected_output[] = "2A";
-	int		expected_return_value = 2;  // Expected number of characters printed
-	char		buffer[100];
-	int		temp_fd;
-	int		saved_stdout;
-
-	// Save the current stdout file descriptor
-	saved_stdout = dup(STDOUT_FILENO);
-
-	// Create a temporary file and get its file descriptor
-	temp_fd = open("/tmp/test_output.txt", O_RDWR | O_CREAT | O_TRUNC, 0666);
-	if (temp_fd == -1) {
-		mu_fail("Failed to open temporary file");
-	}
-
-	// Redirect stdout to the temporary file
-	if (dup2(temp_fd, STDOUT_FILENO) == -1) {
-		mu_fail("Failed to redirect stdout");
-	}
-
-	// ACT
-	int	actual_return_value = ft_printf("%X", num);
-
-	// Reset stdout to its original value
-	fflush(stdout);
-	dup2(saved_stdout, STDOUT_FILENO);  // Restore the original stdout
-	close(saved_stdout);
-	close(temp_fd);
-
-	// Read the content of the temporary file
-	FILE	*temp_file = fopen("/tmp/test_output.txt", "r");
-	if (!temp_file) {
-		mu_fail("Failed to open temporary file for reading");
-	}
-	size_t	bytes_read = fread(buffer, 1, sizeof(buffer) - 1, temp_file);
-	buffer[bytes_read] = '\0';  // Null-terminate the string read
-	fclose(temp_file);
-
-	// ASSERT
-	mu_assert_string_eq(expected_output, buffer);  // Check printed output
-	mu_assert_int_eq(expected_return_value, actual_return_value);  // Check return value
-
-	// Clean up the temporary file
-	remove("/tmp/test_output.txt");
-}
-
-MU_TEST(test_ft_printf_print_mix)
-{
-	// ARRANGE
-	char		c = 'a';
-	char		*str = "caio";
-	char		*ptr = (void *)0x1234abcd; // Example pointer to test
-	int		num1 = 42;
-	int		num2 = -42;
-	unsigned int	num3 = 4200;
-	unsigned int	num4 = 42;
-	char		expected_output[200];
-	int		expected_return_value;  // Expected number of characters printed
-	char		buffer[200];
-	int		temp_fd;
-	int		saved_stdout;
+	char	*ptr = (void *)0x1234abcd; // Example pointer to test
+	char	expected_output[100];
+	int	expected_return_value;  // Expected number of characters printed
+	char	buffer[100];
+	int	temp_fd;
+	int	saved_stdout;
 
 	// Create the expected output using snprintf
-	expected_return_value = snprintf(expected_output, sizeof(expected_output), "%c%s%p%%%d%d%u%x%X", c, str, ptr, num1, num2, num3, num4, num4);
+	expected_return_value = snprintf(expected_output, sizeof(expected_output), "%5p", ptr);
 
 	// Save the current stdout file descriptor
 	saved_stdout = dup(STDOUT_FILENO);
@@ -496,7 +343,7 @@ MU_TEST(test_ft_printf_print_mix)
 	}
 
 	// ACT
-	int	actual_return_value = ft_printf("%c%s%p%%%d%d%u%x%X", c, str, ptr, num1, num2, num3, num4, num4);
+	int	actual_return_value = ft_printf("%5p", ptr);
 
 	// Reset stdout to its original value
 	fflush(stdout);
@@ -521,30 +368,229 @@ MU_TEST(test_ft_printf_print_mix)
 	remove("/tmp/test_output.txt");
 }
 
-MU_TEST_SUITE(ft_printf_test_suite)
-{
 /*
-	MU_RUN_TEST(test_ft_printf_print_one_int);
-	MU_RUN_TEST(test_ft_printf_print_one_positive_int_and_one_normal);
-	MU_RUN_TEST(test_ft_printf_print_int_max);
-	MU_RUN_TEST(test_ft_printf_print_int_min);
-	MU_RUN_TEST(test_ft_printf_print_int_max_plus_one);
-	MU_RUN_TEST(test_ft_printf_print_int_min_minus_one);
-	MU_RUN_TEST(test_ft_printf_print_int_min_minus_one);
-	MU_RUN_TEST(test_ft_printf_print_two_unsigned_int_int_max_and_int_min);
-	MU_RUN_TEST(test_ft_printf_print_one_number_x_specifier);
-	MU_RUN_TEST(test_ft_printf_print_one_number_X_specifier);
-	MU_RUN_TEST(test_ft_printf_print_mix);
+MU_TEST(test_ft_printf_one_pointer_with_ignored_zero_flag)
+{
+	// ARRANGE
+	char	*ptr = (void *)0x1234abcd; // Example pointer to test
+	char	expected_output[100];
+	int	expected_return_value;  // Expected number of characters printed
+	char	buffer[100];
+	int	temp_fd;
+	int	saved_stdout;
+
+	// Create the expected output using snprintf
+	expected_return_value = snprintf(expected_output, sizeof(expected_output), "%020p", ptr);
+
+	// Save the current stdout file descriptor
+	saved_stdout = dup(STDOUT_FILENO);
+
+	// Create a temporary file and get its file descriptor
+	temp_fd = open("/tmp/test_output.txt", O_RDWR | O_CREAT | O_TRUNC, 0666);
+	if (temp_fd == -1) {
+		mu_fail("Failed to open temporary file");
+	}
+
+	// Redirect stdout to the temporary file
+	if (dup2(temp_fd, STDOUT_FILENO) == -1) {
+		mu_fail("Failed to redirect stdout");
+	}
+
+	// ACT
+	int	actual_return_value = ft_printf("%020p", ptr);
+
+	// Reset stdout to its original value
+	fflush(stdout);
+	dup2(saved_stdout, STDOUT_FILENO);  // Restore the original stdout
+	close(saved_stdout);
+	close(temp_fd);
+
+	// Read the content of the temporary file
+	FILE	*temp_file = fopen("/tmp/test_output.txt", "r");
+	if (!temp_file) {
+		mu_fail("Failed to open temporary file for reading");
+	}
+	size_t	bytes_read = fread(buffer, 1, sizeof(buffer) - 1, temp_file);
+	buffer[bytes_read] = '\0';  // Null-terminate the string read
+	fclose(temp_file);
+
+	// ASSERT
+	mu_assert_string_eq(expected_output, buffer);  // Check printed output
+	mu_assert_int_eq(expected_return_value, actual_return_value);  // Check return value
+
+	// Clean up the temporary file
+	remove("/tmp/test_output.txt");
+}
 */
+
+MU_TEST(test_ft_printf_one_pointer_with_text)
+{
+	// ARRANGE
+	char	*ptr = (void *)0x1234abcd; // Example pointer to test
+	char	expected_output[100];
+	int	expected_return_value;  // Expected number of characters printed
+	char	buffer[100];
+	int	temp_fd;
+	int	saved_stdout;
+
+	// Create the expected output using snprintf
+	expected_return_value = snprintf(expected_output, sizeof(expected_output), "Address: %p", ptr);
+
+	// Save the current stdout file descriptor
+	saved_stdout = dup(STDOUT_FILENO);
+
+	// Create a temporary file and get its file descriptor
+	temp_fd = open("/tmp/test_output.txt", O_RDWR | O_CREAT | O_TRUNC, 0666);
+	if (temp_fd == -1) {
+		mu_fail("Failed to open temporary file");
+	}
+
+	// Redirect stdout to the temporary file
+	if (dup2(temp_fd, STDOUT_FILENO) == -1) {
+		mu_fail("Failed to redirect stdout");
+	}
+
+	// ACT
+	int	actual_return_value = ft_printf("Address: %p", ptr);
+
+	// Reset stdout to its original value
+	fflush(stdout);
+	dup2(saved_stdout, STDOUT_FILENO);  // Restore the original stdout
+	close(saved_stdout);
+	close(temp_fd);
+
+	// Read the content of the temporary file
+	FILE	*temp_file = fopen("/tmp/test_output.txt", "r");
+	if (!temp_file) {
+		mu_fail("Failed to open temporary file for reading");
+	}
+	size_t	bytes_read = fread(buffer, 1, sizeof(buffer) - 1, temp_file);
+	buffer[bytes_read] = '\0';  // Null-terminate the string read
+	fclose(temp_file);
+
+	// ASSERT
+	mu_assert_string_eq(expected_output, buffer);  // Check printed output
+	mu_assert_int_eq(expected_return_value, actual_return_value);  // Check return value
+
+	// Clean up the temporary file
+	remove("/tmp/test_output.txt");
 }
 
-int	main(void)
+MU_TEST(test_ft_printf_null_pointer_with_text)
 {
-	MU_RUN_SUITE(ft_printf_test_suite);
-	MU_RUN_SUITE(ft_printf_c_and_percent_sign_test_suite);
-	MU_RUN_SUITE(ft_printf_s_test_suite);
-	MU_RUN_SUITE(ft_printf_p_test_suite);
+	// ARRANGE
+	void	*ptr = NULL;
+	char	expected_output[] = "NULL: (nil)";
+	int	expected_return_value = 11;  // Expected number of characters printed
+	char	buffer[100];
+	int	temp_fd;
+	int	saved_stdout;
 
-	MU_REPORT();
-	return MU_EXIT_CODE;
+	// Save the current stdout file descriptor
+	saved_stdout = dup(STDOUT_FILENO);
+
+	// Create a temporary file and get its file descriptor
+	temp_fd = open("/tmp/test_output.txt", O_RDWR | O_CREAT | O_TRUNC, 0666);
+	if (temp_fd == -1) {
+		mu_fail("Failed to open temporary file");
+	}
+
+	// Redirect stdout to the temporary file
+	if (dup2(temp_fd, STDOUT_FILENO) == -1) {
+		mu_fail("Failed to redirect stdout");
+	}
+
+	// ACT
+	int	actual_return_value = ft_printf("NULL: %p", ptr);
+
+	// Reset stdout to its original value
+	fflush(stdout);
+	dup2(saved_stdout, STDOUT_FILENO);  // Restore the original stdout
+	close(saved_stdout);
+	close(temp_fd);
+
+	// Read the content of the temporary file
+	FILE	*temp_file = fopen("/tmp/test_output.txt", "r");
+	if (!temp_file) {
+		mu_fail("Failed to open temporary file for reading");
+	}
+	size_t	bytes_read = fread(buffer, 1, sizeof(buffer) - 1, temp_file);
+	buffer[bytes_read] = '\0';  // Null-terminate the string read
+	fclose(temp_file);
+
+	// ASSERT
+	mu_assert_string_eq(expected_output, buffer);  // Check printed output
+	mu_assert_int_eq(expected_return_value, actual_return_value);  // Check return value
+
+	// Clean up the temporary file
+	remove("/tmp/test_output.txt");
+}
+
+MU_TEST(test_ft_printf_multiple_pointers)
+{
+	// ARRANGE
+	char	*ptr1 = (void *)0x1234abcd; // Example pointer to test
+	char	*ptr2 = (void *)0x432dcba; // Example pointer to test
+	char	expected_output[100];
+	int	expected_return_value;  // Expected number of characters printed
+	char	buffer[100];
+	int	temp_fd;
+	int	saved_stdout;
+
+	// Create the expected output using snprintf
+	expected_return_value = snprintf(expected_output, sizeof(expected_output), "%p%p", ptr1, ptr2);
+
+	// Save the current stdout file descriptor
+	saved_stdout = dup(STDOUT_FILENO);
+
+	// Create a temporary file and get its file descriptor
+	temp_fd = open("/tmp/test_output.txt", O_RDWR | O_CREAT | O_TRUNC, 0666);
+	if (temp_fd == -1) {
+		mu_fail("Failed to open temporary file");
+	}
+
+	// Redirect stdout to the temporary file
+	if (dup2(temp_fd, STDOUT_FILENO) == -1) {
+		mu_fail("Failed to redirect stdout");
+	}
+
+	// ACT
+	int	actual_return_value = ft_printf("%p%p", ptr1, ptr2);
+
+	// Reset stdout to its original value
+	fflush(stdout);
+	dup2(saved_stdout, STDOUT_FILENO);  // Restore the original stdout
+	close(saved_stdout);
+	close(temp_fd);
+
+	// Read the content of the temporary file
+	FILE	*temp_file = fopen("/tmp/test_output.txt", "r");
+	if (!temp_file) {
+		mu_fail("Failed to open temporary file for reading");
+	}
+	size_t	bytes_read = fread(buffer, 1, sizeof(buffer) - 1, temp_file);
+	buffer[bytes_read] = '\0';  // Null-terminate the string read
+	fclose(temp_file);
+
+	// ASSERT
+	mu_assert_string_eq(expected_output, buffer);  // Check printed output
+	mu_assert_int_eq(expected_return_value, actual_return_value);  // Check return value
+
+	// Clean up the temporary file
+	remove("/tmp/test_output.txt");
+}
+
+MU_TEST_SUITE(ft_printf_p_test_suite)
+{
+	MU_RUN_TEST(test_ft_printf_one_pointer);
+	MU_RUN_TEST(test_ft_printf_one_pointer_with_width);
+	MU_RUN_TEST(test_ft_printf_one_pointer_with_left_alignment);
+	MU_RUN_TEST(test_ft_printf_null_pointer);
+	MU_RUN_TEST(test_ft_printf_null_pointer_with_width);
+	MU_RUN_TEST(test_ft_printf_null_pointer_with_left_alignment);
+	MU_RUN_TEST(test_ft_printf_one_pointer_with_small_width);
+	//MU_RUN_TEST(test_ft_printf_one_pointer_with_ignored_zero_flag);
+	MU_RUN_TEST(test_ft_printf_one_pointer_with_text);
+	MU_RUN_TEST(test_ft_printf_null_pointer_with_text);
+	MU_RUN_TEST(test_ft_printf_multiple_pointers);
 }
