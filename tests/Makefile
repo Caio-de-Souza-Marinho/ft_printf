@@ -5,13 +5,13 @@ TESTFILE	= tests_ft_printf.c
 TESTPROGRAM	= printf.tests
 SRCDIR		= ../src/
 
-SRCS		= ${SRCDIR}ft_printf.c \
-		  ${SRCDIR}ft_printf_utils.c \
-		  ${SRCDIR}parser.c \
-		  ${SRCDIR}buffer.c \
-		  ${SRCDIR}printf_char.c \
-		  ${SRCDIR}printf_str.c \
-		  ${SRCDIR}printf_int.c
+SRCS		= ${SRCDIR}ft_printf_bonus.c \
+		  ${SRCDIR}ft_printf_utils_bonus.c \
+		  ${SRCDIR}ft_printf_parser_bonus.c \
+		  ${SRCDIR}ft_printf_buffer_bonus.c \
+		  ${SRCDIR}ft_printf_char_bonus.c \
+		  ${SRCDIR}ft_printf_str_bonus.c \
+		  ${SRCDIR}ft_printf_int_bonus.c
 
 OBJS		= ${SRCS:.c=.o}
 
