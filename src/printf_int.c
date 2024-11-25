@@ -58,9 +58,10 @@ static void	set_padding_zeros(t_data *data)
 	}
 	if (data->format.specifier == 'p')
 	{
-		data->format.padding_zeros = data->format.width_value
-			- data->format.nbr_len - 2;
-		if (data->format.padding_zeros < 0)
+		if (data->format.zero_pad && data->format.precision_value < 0)
+			data->format.padding_zeros = data->format.width_value
+				- data->format.nbr_len - 2;
+		else
 			data->format.padding_zeros = 0;
 		return ;
 	}
@@ -91,14 +92,19 @@ static void	set_padding_spaces(t_data *data)
 		- data->format.padding_zeros - data->format.nbr_len;
 	if (data->format.specifier == 'p')
 	{
-		data->format.padding_spaces -= 2;
+		data->format.padding_spaces = data->format.width_value
+			- data->format.nbr_len - 2;
+		if (data->format.zero_pad && data->format.precision_value < 0)
+			data->format.padding_spaces -= data->format.padding_zeros;
 		if (data->format.padding_spaces < 0)
 			data->format.padding_spaces = 0;
 		return ;
 	}
-	if (in("xX", data->format.specifier) && data->format.hash && data->format.buf_temp[0] != '0')
+	if (in("xX", data->format.specifier) && data->format.hash
+		&& data->format.buf_temp[0] != '0')
 		data->format.padding_zeros -= 2;
-	if (data->format.is_negative || (!data->format.is_negative && (data->format.plus || data->format.space)))
+	if (data->format.is_negative || (!data->format.is_negative
+			&& (data->format.plus || data->format.space)))
 		data->format.padding_spaces--;
 	if (data->format.padding_spaces < 0)
 		data->format.padding_spaces = 0;
