@@ -4,16 +4,33 @@
 #include <string.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <limits.h>
 
-MU_TEST(test_ft_printf_print_char)
+#include "tests_ft_printf_c_and_%.c"
+#include "tests_ft_printf_s.c"
+#include "tests_ft_printf_p.c"
+#include "tests_ft_printf_d_and_i.c"
+#include "tests_ft_printf_u.c"
+#include "tests_ft_printf_x_and_X.c"
+
+MU_TEST(test_ft_printf_print_mix)
 {
 	// ARRANGE
-	char c = 'a';
-	char expected_output[] = "a";
-	int expected_return_value = 1;  // Expected number of characters printed
-	char buffer[100];
-	int temp_fd;
-	int saved_stdout;
+	char		c = 'a';
+	char		*str = "caio";
+	char		*ptr = (void *)0x1234abcd; // Example pointer to test
+	int		num1 = 42;
+	int		num2 = -42;
+	unsigned int	num3 = 4200;
+	unsigned int	num4 = 42;
+	char		expected_output[200];
+	int		expected_return_value;  // Expected number of characters printed
+	char		buffer[200];
+	int		temp_fd;
+	int		saved_stdout;
+
+	// Create the expected output using snprintf
+	expected_return_value = snprintf(expected_output, sizeof(expected_output), "%c%s%p%%%d%d%u%x%X", c, str, ptr, num1, num2, num3, num4, num4);
 
 	// Save the current stdout file descriptor
 	saved_stdout = dup(STDOUT_FILENO);
@@ -30,7 +47,7 @@ MU_TEST(test_ft_printf_print_char)
 	}
 
 	// ACT
-	int actual_return_value = ft_printf("%c", c);
+	int	actual_return_value = ft_printf("%c%s%p%%%d%d%u%x%X", c, str, ptr, num1, num2, num3, num4, num4);
 
 	// Reset stdout to its original value
 	fflush(stdout);
@@ -39,11 +56,11 @@ MU_TEST(test_ft_printf_print_char)
 	close(temp_fd);
 
 	// Read the content of the temporary file
-	FILE *temp_file = fopen("/tmp/test_output.txt", "r");
+	FILE	*temp_file = fopen("/tmp/test_output.txt", "r");
 	if (!temp_file) {
 		mu_fail("Failed to open temporary file for reading");
 	}
-	size_t bytes_read = fread(buffer, 1, sizeof(buffer) - 1, temp_file);
+	size_t	bytes_read = fread(buffer, 1, sizeof(buffer) - 1, temp_file);
 	buffer[bytes_read] = '\0';  // Null-terminate the string read
 	fclose(temp_file);
 
@@ -57,12 +74,18 @@ MU_TEST(test_ft_printf_print_char)
 
 MU_TEST_SUITE(ft_printf_test_suite)
 {
-	MU_RUN_TEST(test_ft_printf_print_char);
+	MU_RUN_TEST(test_ft_printf_print_mix);
 }
 
 int	main(void)
 {
 	MU_RUN_SUITE(ft_printf_test_suite);
+	MU_RUN_SUITE(ft_printf_c_and_percent_sign_test_suite);
+	MU_RUN_SUITE(ft_printf_s_test_suite);
+	MU_RUN_SUITE(ft_printf_p_test_suite);
+	MU_RUN_SUITE(ft_printf_d_and_i_test_suite);
+	MU_RUN_SUITE(ft_printf_u_test_suite);
+	MU_RUN_SUITE(ft_printf_x_and_X_test_suite);
 
 	MU_REPORT();
 	return MU_EXIT_CODE;

@@ -5,7 +5,14 @@ TESTFILE	= tests_ft_printf.c
 TESTPROGRAM	= printf.tests
 SRCDIR		= ../src/
 
-SRCS		= ${SRCDIR}ft_printf.c ${SRCDIR}ft_putchar_printf.c
+SRCS		= ${SRCDIR}ft_printf_bonus.c \
+		  ${SRCDIR}ft_printf_utils_bonus.c \
+		  ${SRCDIR}ft_printf_parser_bonus.c \
+		  ${SRCDIR}ft_printf_buffer_bonus.c \
+		  ${SRCDIR}ft_printf_char_bonus.c \
+		  ${SRCDIR}ft_printf_str_bonus.c \
+		  ${SRCDIR}ft_printf_int_bonus.c
+
 OBJS		= ${SRCS:.c=.o}
 
 test:		fclean
@@ -25,4 +32,3 @@ fclean:		clean
 re:		fclean test
 
 .PHONY:		test leakfull clean fclean re
-
