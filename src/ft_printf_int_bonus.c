@@ -6,13 +6,13 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 21:49:10 by caide-so          #+#    #+#             */
-/*   Updated: 2024/11/25 19:12:24 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/04/14 11:07:14 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf_bonus.h"
 
-static void	set_padding_zeros(t_data *data);
+static void	set_padding_zeros(t_data *data, t_union_int int_values);
 static void	set_padding_zeros_pt_2(t_data *data);
 static void	set_padding_spaces(t_data *data);
 static void	put_sign(t_data *data);
@@ -20,7 +20,7 @@ static void	put_sign(t_data *data);
 void	printf_int(t_data *data, t_union_int int_values)
 {
 	itoa_buf(data, int_values);
-	set_padding_zeros(data);
+	set_padding_zeros(data, int_values);
 	set_padding_spaces(data);
 	if (data->format.specifier == 'p' && int_values.uint64 == 0)
 	{
@@ -45,8 +45,16 @@ void	printf_int(t_data *data, t_union_int int_values)
 	}
 }
 
-static void	set_padding_zeros(t_data *data)
+static void	set_padding_zeros(t_data *data, t_union_int int_values)
 {
+	if (data->format.precision_value == 0 && int_values.uint64 == 0
+		&& data->format.specifier != 'p')
+	{
+		data->format.nbr_len = 0;
+		data->format.buf_temp[0] = '\0';
+		if (data->format.hash && in("xX", data->format.specifier))
+			data->format.hash = 0;
+	}
 	if (data->format.precision_value >= 0)
 	{
 		if (data->format.precision_value > data->format.nbr_len)
@@ -56,6 +64,11 @@ static void	set_padding_zeros(t_data *data)
 			return ;
 		}
 	}
+	set_padding_zeros_pt_2(data);
+}
+
+static void	set_padding_zeros_pt_2(t_data *data)
+{
 	if (data->format.specifier == 'p')
 	{
 		if (data->format.zero_pad && data->format.precision_value < 0)
@@ -65,14 +78,10 @@ static void	set_padding_zeros(t_data *data)
 			data->format.padding_zeros = 0;
 		return ;
 	}
-	if (data->format.zero_pad && !data->format.left_justified)
+	if (data->format.zero_pad && !data->format.left_justified
+		&& data->format.precision_value < 0)
 		data->format.padding_zeros = data->format.width_value
 			- data->format.nbr_len;
-	set_padding_zeros_pt_2(data);
-}
-
-static void	set_padding_zeros_pt_2(t_data *data)
-{
 	if (data->format.specifier == 'u')
 		return ;
 	else if ((in("xX", data->format.specifier) && data->format.hash
@@ -88,24 +97,21 @@ static void	set_padding_zeros_pt_2(t_data *data)
 
 static void	set_padding_spaces(t_data *data)
 {
-	data->format.padding_spaces = data->format.width_value
-		- data->format.padding_zeros - data->format.nbr_len;
-	if (data->format.specifier == 'p')
-	{
-		data->format.padding_spaces = data->format.width_value
-			- data->format.nbr_len - 2;
-		if (data->format.zero_pad && data->format.precision_value < 0)
-			data->format.padding_spaces -= data->format.padding_zeros;
-		if (data->format.padding_spaces < 0)
-			data->format.padding_spaces = 0;
-		return ;
-	}
-	if (in("xX", data->format.specifier) && data->format.hash
-		&& data->format.buf_temp[0] != '0')
-		data->format.padding_zeros -= 2;
+	int	total_len;
+	int	prefix_len;
+
+	total_len = data->format.nbr_len + data->format.padding_zeros;
+	prefix_len = 0;
 	if (data->format.is_negative || (!data->format.is_negative
 			&& (data->format.plus || data->format.space)))
-		data->format.padding_spaces--;
+		prefix_len = 1;
+	if (data->format.hash && data->format.base == 16
+		&& data->format.buf_temp[0] != '0' && data->format.specifier != 'p')
+		prefix_len = 2;
+	if (data->format.specifier == 'p' && data->format.buf_temp[0] != '\0')
+		prefix_len = 2;
+	data->format.padding_spaces = data->format.width_value - total_len
+		- prefix_len;
 	if (data->format.padding_spaces < 0)
 		data->format.padding_spaces = 0;
 }
