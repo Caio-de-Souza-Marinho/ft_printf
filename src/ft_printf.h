@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 17:33:10 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/14 11:05:07 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/04/14 22:25:55 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,9 @@ void	itoa_buf(t_data *data, t_union_int int_values);
 void	printf_char(t_data *data, int c);
 void	printf_str(t_data *data, char *s);
 void	printf_int(t_data *data, t_union_int int_values);
+void	put_sign(t_data *data);
+int		handle_nil_pointer(t_data *data);
+void	print_nil_ptr(t_data *data, int width);
+void	print_formatted_number(t_data *data);
 
 #endif 

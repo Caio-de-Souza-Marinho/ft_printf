@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 20:12:23 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/14 11:05:07 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/04/14 22:32:32 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ int	s_len(const char *s)
 {
 	int	len;
 
-	len = 0;
 	if (s == NULL)
 		return (0);
+	len = 0;
 	while (s[len])
 	{
 		len++;
