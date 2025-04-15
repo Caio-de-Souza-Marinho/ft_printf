@@ -20,7 +20,8 @@ BONUS		= ft_printf_bonus.c \
 		  ft_printf_buffer_bonus.c \
 		  ft_printf_char_bonus.c \
 		  ft_printf_str_bonus.c \
-		  ft_printf_int_bonus.c
+		  ft_printf_int_bonus.c \
+		  ft_printf_int_utils_bonus.c \
 
 BONUS_OBJS 	= ${BONUS:.c=.o}
 

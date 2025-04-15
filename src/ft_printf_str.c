@@ -6,33 +6,25 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 02:34:51 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/14 22:57:43 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/04/15 10:49:06 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static void	set_str_padding_spaces(t_data *data, char *s, int is_null);
-static int	get_print_len(t_data *data, int str_len);
+static void	set_str_padding(t_data *data, int print_len);
+static int	get_print_len(t_data *data, int str_len, int is_null);
+static void	handle_null_str(t_data *data, char **s, int *is_null);
 
-// [-][width][.precision]
 void	printf_str(t_data *data, char *s)
 {
-	int		str_len;
-	int		print_len;
-	int		is_null;
-	char	*null_str;
+	int	print_len;
+	int	is_null;
 
 	is_null = 0;
-	null_str = "(null)";
-	if (s == NULL)
-	{
-		s = null_str;
-		is_null = 1;
-	}
-	str_len = s_len(s);
-	print_len = get_print_len(data, str_len);
-	set_str_padding_spaces(data, s, is_null);
+	handle_null_str(data, &s, &is_null);
+	print_len = get_print_len(data, s_len(s), is_null);
+	set_str_padding(data, print_len);
 	if (data->format.left_justified)
 	{
 		if (print_len > 0)
@@ -47,37 +39,40 @@ void	printf_str(t_data *data, char *s)
 	}
 }
 
-static int	get_print_len(t_data *data, int str_len)
+static void	handle_null_str(t_data *data, char **s, int *is_null)
 {
-	if (data->format.precision_value >= 0)
-	{
-		if (data->format.precision_value < str_len)
-			return (data->format.precision_value);
-	}
+	if (*s != NULL)
+		return ;
+	*s = "(null)";
+	*is_null = 1;
+	if (data->format.precision_value >= 0 && data->format.precision_value < 5)
+		data->format.precision_value = 0;
+}
+
+static int	get_print_len(t_data *data, int str_len, int is_null)
+{
+	int	precision;
+
+	precision = data->format.precision_value;
+	if (precision < 0)
+		return (str_len);
+	if (is_null && precision == 0)
+		return (0);
+	if (is_null && precision < 5)
+		return (0);
+	if (precision < str_len)
+		return (precision);
 	return (str_len);
 }
 
-static void	set_str_padding_spaces(t_data *data, char *s, int is_null)
+static void	set_str_padding(t_data *data, int print_len)
 {
-	int	len;
-	int	print_len;
+	int	width;
 
-	len = s_len(s);
-	print_len = get_print_len(data, len);
-	if (is_null) {
-		if (data->format.precision_value >= 0) {
-			if (data->format.precision_value == 0) {
-				print_len = 0;
-			} else if (data->format.precision_value < 5) {
-				print_len = 0;
-			} else {
-				print_len = data->format.precision_value;
-			}
-		}
-	}
-	if (data->format.width_value > 0) {
-		data->format.padding_spaces = data->format.width_value - print_len;
-		if (data->format.padding_spaces < 0)
-			data->format.padding_spaces = 0;
-	}
+	width = data->format.width_value;
+	if (width <= 0)
+		return ;
+	data->format.padding_spaces = width - print_len;
+	if (data->format.padding_spaces < 0)
+		data->format.padding_spaces = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 21:49:10 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/14 11:07:14 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/04/15 10:51:57 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,34 +15,18 @@
 static void	set_padding_zeros(t_data *data, t_union_int int_values);
 static void	set_padding_zeros_pt_2(t_data *data);
 static void	set_padding_spaces(t_data *data);
-static void	put_sign(t_data *data);
 
 void	printf_int(t_data *data, t_union_int int_values)
 {
+	if (data->format.specifier == 'p' && int_values.uint64 == 0)
+	{
+		if (handle_nil_pointer(data))
+			return ;
+	}
 	itoa_buf(data, int_values);
 	set_padding_zeros(data, int_values);
 	set_padding_spaces(data);
-	if (data->format.specifier == 'p' && int_values.uint64 == 0)
-	{
-		printf_str(data, "(nil)");
-		return ;
-	}
-	if (data->format.left_justified)
-	{
-		put_sign(data);
-		putchar_buf_n('0', data->format.padding_zeros, data);
-		putstr_buf_n(data->format.buf_temp, data->format.nbr_len, data);
-		putchar_buf_n(' ', data->format.padding_spaces, data);
-		return ;
-	}
-	else
-	{
-		putchar_buf_n(' ', data->format.padding_spaces, data);
-		put_sign(data);
-		putchar_buf_n('0', data->format.padding_zeros, data);
-		putstr_buf_n(data->format.buf_temp, data->format.nbr_len, data);
-		return ;
-	}
+	print_formatted_number(data);
 }
 
 static void	set_padding_zeros(t_data *data, t_union_int int_values)
@@ -116,7 +100,7 @@ static void	set_padding_spaces(t_data *data)
 		data->format.padding_spaces = 0;
 }
 
-static void	put_sign(t_data *data)
+void	put_sign(t_data *data)
 {
 	if (data->format.base == 16)
 	{
