@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 17:33:10 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/14 11:05:07 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/04/15 13:22:04 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,58 @@
 # define LOW_HEX "0123456789abcdef"
 # define UP_HEX "0123456789ABCDEF"
 
+// Union to handle integer values for both signed and unsigned types
+//
+// Members:
+// uint64: Stores unsigned 64-bit integer values (e.g., pointers, hex values)
+//
+// int64: Stores signed 64-bit integer values (e.g., decimal integers)
+//
+// Note: Used to simplify conversions for different specifiers(e.g., %d, %p, %x)
 typedef union t_union_int
 {
 	unsigned long	uint64;
 	long			int64;
 }	t_union_int;
 
+// Stores formatting options parsed from the format string
+//
+// Members:
+// plus: + flag
+//
+// left_justified: - flag
+//
+// space: ' ' flag
+//
+// zero_pad: 0 flag
+//
+// hash: # flag
+//
+// specifier: Conversion specifier (c, s, d, x)
+//
+// width_value: width field value
+//
+// precision_value: precision field value
+//
+// buf_temp: Temporary buffer for number-to-string conversions
+//
+// nbr_len: Length of the converted number string
+//
+// upper_case: Flag for uppercase hex (X)
+//
+// base: Numeric base (10 for decimal, 16 for hex)
+//
+// padding_spaces: Calculated space padding value
+//
+// padding_zeros: Calculated zeros padding value
+//
+// signed_value: Boolean for signed or unsigned number
+//
+// is_negative: Boolean for negative or positive number
+//
+// is_converted: Boolean for state converted or not
+//
+// Note: Reset for each new format specifier during parsing
 typedef struct s_format
 {
 	int		plus;
@@ -51,6 +97,20 @@ typedef struct s_format
 	int		is_converted;
 }	t_format;
 
+// Main struct for managing the printf operation state
+//
+// Members:
+// s: Pointer to the format string
+//
+// ap: va_list for variadic arguments
+//
+// chars_written: Total characters printed
+//
+// buf: Output buffer (4096 bytes)
+//
+// buffer_index: Current position in the buffer
+//
+// format: Struct holding parsed format options
 typedef struct s_data
 {
 	const char	*s;
@@ -84,5 +144,9 @@ void	itoa_buf(t_data *data, t_union_int int_values);
 void	printf_char(t_data *data, int c);
 void	printf_str(t_data *data, char *s);
 void	printf_int(t_data *data, t_union_int int_values);
+void	put_sign(t_data *data);
+int		handle_nil_pointer(t_data *data);
+void	print_nil_ptr(t_data *data, int width);
+void	print_formatted_number(t_data *data);
 
 #endif 

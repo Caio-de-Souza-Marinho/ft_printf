@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 21:49:10 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/14 11:05:07 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/04/15 13:22:04 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,36 +15,31 @@
 static void	set_padding_zeros(t_data *data, t_union_int int_values);
 static void	set_padding_zeros_pt_2(t_data *data);
 static void	set_padding_spaces(t_data *data);
-static void	put_sign(t_data *data);
 
+// Handles integer conversions (%d, %u, %x, %X, %p)
+// 1. Converts the number to a string via itoa_buf
+// 2. Calculates padding (zeros and spaces)
+// 3. Prints the formatted number with signs/prefixes
+//
+// Note: Uses t_union_int to handle signed/unsigned values
 void	printf_int(t_data *data, t_union_int int_values)
 {
+	if (data->format.specifier == 'p' && int_values.uint64 == 0)
+	{
+		if (handle_nil_pointer(data))
+			return ;
+	}
 	itoa_buf(data, int_values);
 	set_padding_zeros(data, int_values);
 	set_padding_spaces(data);
-	if (data->format.specifier == 'p' && int_values.uint64 == 0)
-	{
-		printf_str(data, "(nil)");
-		return ;
-	}
-	if (data->format.left_justified)
-	{
-		put_sign(data);
-		putchar_buf_n('0', data->format.padding_zeros, data);
-		putstr_buf_n(data->format.buf_temp, data->format.nbr_len, data);
-		putchar_buf_n(' ', data->format.padding_spaces, data);
-		return ;
-	}
-	else
-	{
-		putchar_buf_n(' ', data->format.padding_spaces, data);
-		put_sign(data);
-		putchar_buf_n('0', data->format.padding_zeros, data);
-		putstr_buf_n(data->format.buf_temp, data->format.nbr_len, data);
-		return ;
-	}
+	print_formatted_number(data);
 }
 
+// Calculates zero-padding for numbers
+// 1. Handles precision-based zero padding
+// 2. Adjusts for edge cases (e.g., %p widh 0 flag)
+//
+// Note: Called by print_int
 static void	set_padding_zeros(t_data *data, t_union_int int_values)
 {
 	if (data->format.precision_value == 0 && int_values.uint64 == 0
@@ -67,6 +62,11 @@ static void	set_padding_zeros(t_data *data, t_union_int int_values)
 	set_padding_zeros_pt_2(data);
 }
 
+// Secondary zero-padding logic for edge cases
+// 1. Adjusts padding for hex/pointer prefixex (0x)
+// 2. Accounts for sign/space flags
+//
+// Note: Split from set_padding_zeros for readability
 static void	set_padding_zeros_pt_2(t_data *data)
 {
 	if (data->format.specifier == 'p')
@@ -95,6 +95,11 @@ static void	set_padding_zeros_pt_2(t_data *data)
 	return ;
 }
 
+// Calculates space-padding for alignment
+// 1. Accounts for sign/prefix characters
+// 2. Computes total padding spaces
+//
+// Note: Used for left/right alignment in printf_int
 static void	set_padding_spaces(t_data *data)
 {
 	int	total_len;
@@ -116,7 +121,12 @@ static void	set_padding_spaces(t_data *data)
 		data->format.padding_spaces = 0;
 }
 
-static void	put_sign(t_data *data)
+// Prints sign/prefix for numerics (e.g., -, +, 0x)
+// 1. Adds - for negatives, +/' ' for positives (if flags set)
+// 2. Adds 0x/ 0X for hex/pointer values
+//
+// Note: Called during integer/pointer formatting
+void	put_sign(t_data *data)
 {
 	if (data->format.base == 16)
 	{

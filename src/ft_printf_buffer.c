@@ -6,16 +6,17 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 14:15:29 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/14 11:05:07 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/04/15 13:22:04 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-// This function is called when
-// 1 - the loop is over (format string is over)
-// 2 - when buf is full [4k chars]
-
+// Writes the buffer to STDOUT and resets it
+// 1. Calls write to output the buffer
+// 2. Resets buffer_index and clears the buffer
+//
+// Note: Triggered when the buffer is full of parsing completes
 void	flush_buf(t_data *data)
 {
 	data->chars_written += write(1, data->buf, data->buffer_index);
@@ -23,6 +24,11 @@ void	flush_buf(t_data *data)
 	data->buffer_index = 0;
 }
 
+// Writes a single character to the buffer
+// 1. Adds c to the buffer
+// 2. Flushes the buffer if it reaches BUF_SIZE (4096)
+//
+// Note: Core buffer management function used by all output routines
 void	write_buf(t_data *data, char c)
 {
 	if (data->buffer_index == BUF_SIZE)
@@ -30,6 +36,11 @@ void	write_buf(t_data *data, char c)
 	data->buf[data->buffer_index++] = c;
 }
 
+// Writes n copies of a character to the buffer
+// 1. Repeats c for precision iterations
+// 2. Skips if precision is <= 0
+//
+// Note: Used for padding (spaces/zeros) in formatted output
 void	putchar_buf_n(char c, int precision, t_data *data)
 {
 	if (precision <= 0)
@@ -41,6 +52,11 @@ void	putchar_buf_n(char c, int precision, t_data *data)
 	}
 }
 
+// Writes a string to the buffer with precision-based truncation
+// 1. Writes up to precision characters from s
+// 2. Stops at string null terminator
+//
+// Note: Handles precision truncation for %s and hex/pointer prefixes
 void	putstr_buf_n(char *s, int precision, t_data *data)
 {
 	if (precision <= 0)
@@ -53,6 +69,12 @@ void	putstr_buf_n(char *s, int precision, t_data *data)
 	}
 }
 
+// Recursively converts numbers to ASCII strings
+// 1. Handles negative numbers
+// 2. Builds string in reverse order into buf_temp
+// 3. Supports base 10/16 (lower/uppercase hex)
+//
+// Note: Uses t_union_int for value storage
 void	itoa_buf(t_data *data, t_union_int int_values)
 {
 	t_union_int	tmp_int_values;
