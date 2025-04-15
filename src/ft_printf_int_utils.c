@@ -6,12 +6,18 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 20:54:28 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/14 22:33:12 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/04/15 13:22:04 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
+// Handles printing (nil) for NULL pointers with width/precision
+// 1. Checks if precision is 0 or negative to determine output format
+// 2. Calls print_nil_ptr for precision = 0 case
+// 3. Directly writes (nil) for negative precision
+//
+// Note: Used for %p specifier when the pointer value is NULL
 int	handle_nil_pointer(t_data *data)
 {
 	int	width;
@@ -30,6 +36,12 @@ int	handle_nil_pointer(t_data *data)
 	return (0);
 }
 
+// Prints (nil) for NULL pointers with width alignment
+//
+// 1. Applies left/right padding based on width
+// 2. Writes (nil) string
+//
+// Note: Used exclusively for %p with NULL pointers
 void	print_nil_ptr(t_data *data, int width)
 {
 	char	*nil_str;
@@ -51,6 +63,11 @@ void	print_nil_ptr(t_data *data, int width)
 	}
 }
 
+// Finalizes and prints a formatted number
+// 1. Arranges components: sign, zeros, digits, spaces
+// 2. Applies left/right alignment
+//
+// Note: Central output function for printf_int
 void	print_formatted_number(t_data *data)
 {
 	if (data->format.left_justified)

@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 17:13:05 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/15 10:50:32 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/04/15 13:22:04 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,13 @@ static int	init_data(t_data *data, const char *format);
 static void	render_format(t_data *data);
 static void	render_format_c_s(t_data *data, char specifier);
 
+// Entry point for formatted string
+// 1. Initializes t_data and parses the format string
+// 2. Processes literals and format specifiers
+// 3. Dispatches to conversion functions (printf_int, printf_str)
+// 4. Flushes the buffer and returns total characters written
+//
+// Note: Supports c, s, p, d, u, x, X and % specifiers
 int	ft_printf(const char *format, ...)
 {
 	t_data	data;
@@ -45,6 +52,11 @@ int	ft_printf(const char *format, ...)
 	return (data.chars_written);
 }
 
+// Initializes t_data struct and allocates buffer
+// 1. Sets initial values for chars_written, buffer_index, etc
+// 2. Allocates and clears the 4KB buffer
+//
+// Note: Called once at the start of ft_printf
 static int	init_data(t_data *data, const char *format)
 {
 	data->s = format;
@@ -57,7 +69,11 @@ static int	init_data(t_data *data, const char *format)
 	return (0);
 }
 
-// Wrapper for all rendering functions
+// Dispaches conversion functions based on specifier
+// 1. Handles c, s and % via render_format_c_s
+// 2. Processes integers/pointers via printf_int
+//
+// Note: Central switchyard for specifiers
 static void	render_format(t_data *data)
 {
 	char		specifier;
@@ -83,6 +99,9 @@ static void	render_format(t_data *data)
 	}
 }
 
+// Handles %c, %s and % specifiers
+// 1. Calls printf_char for characters and %
+// 2. Calls print_str for strings
 static void	render_format_c_s(t_data *data, char specifier)
 {
 	if (specifier == '%')

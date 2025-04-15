@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 02:34:51 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/15 10:53:18 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/04/15 13:22:04 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,13 @@ static void	set_str_padding(t_data *data, int print_len);
 static int	get_print_len(t_data *data, int str_len, int is_null);
 static void	handle_null_str(t_data *data, char **s, int *is_null);
 
+// Prints a string with formatting (width, precision, left-justify)
+// 1. Handles NULL strings by replacing with (null)
+// 2. Calculates printable length based on precision
+// 3. Sets padding spaces for alignment
+// 4. Writes the string to the buffer with padding
+//
+// Note: Precision truncates the string; negative precision disables truncation
 void	printf_str(t_data *data, char *s)
 {
 	int	print_len;
@@ -39,6 +46,11 @@ void	printf_str(t_data *data, char *s)
 	}
 }
 
+// Handles NULL string edge cases
+// 1. Replaces NULL with (null)
+// 2. Adjusts precision for (null) truncation
+//
+// Note: Called by printf_str
 static void	handle_null_str(t_data *data, char **s, int *is_null)
 {
 	if (*s != NULL)
@@ -49,6 +61,11 @@ static void	handle_null_str(t_data *data, char **s, int *is_null)
 		data->format.precision_value = 0;
 }
 
+// Determines printable string lenght
+// 1. Applies precision to truncate strings
+// 2. Handles (null) edge cases
+//
+// Note: Precision -1 disables truncation
 static int	get_print_len(t_data *data, int str_len, int is_null)
 {
 	int	precision;
@@ -65,6 +82,10 @@ static int	get_print_len(t_data *data, int str_len, int is_null)
 	return (str_len);
 }
 
+// Calculates spaces-padding for strings
+// 1. Computes padding based on width and printable length
+//
+// Note: Used for alignment in printf_str
 static void	set_str_padding(t_data *data, int print_len)
 {
 	int	width;

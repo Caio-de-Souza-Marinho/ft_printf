@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 19:55:54 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/15 10:52:35 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/04/15 13:22:04 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,13 @@ static void	parse_flags(t_data *data);
 static void	get_value(t_data *data, int *value);
 static int	ft_atoi_printf(t_data *data);
 
+// Parses format specifiers (flags, width, precision, specifier)
+// 1. Resets t_format struct
+// 2. Extracts flags
+// 3. Parses width and precision
+// 4. Validates and sets the conversion specifier
+//
+// Note: Returns -1 on invalid specifiers
 int	parse_format(t_data *data)
 {
 	ft_memset(&data->format, 0, sizeof(t_format));
@@ -41,6 +48,11 @@ int	parse_format(t_data *data)
 	return (0);
 }
 
+// Extracts flags from the format string
+// 1. Iterates over FLAGS characters
+// 2. Updates t_format flags
+//
+// Note: Called during parse_format
 static void	parse_flags(t_data *data)
 {
 	char	flag;
@@ -62,6 +74,11 @@ static void	parse_flags(t_data *data)
 	}
 }
 
+// Parses width/precision values
+// 1. Reads * to fetch value from va_list
+// 2. Otherwise, parses numeric value from the format string
+//
+// Note: Used for both width and precision parsing
 static void	get_value(t_data *data, int *value)
 {
 	if (*data->s == '*')
@@ -73,6 +90,11 @@ static void	get_value(t_data *data, int *value)
 	*value = ft_atoi_printf(data);
 }
 
+// Converts a numeric substring to an integer
+// 1. Reads digits from the format string
+// 2. Returns parsed integer value
+//
+// Note: Helper for get_value during width/precision parsing
 static int	ft_atoi_printf(t_data *data)
 {
 	int	value;
