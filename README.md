@@ -1,6 +1,6 @@
-# ft_printf
-
 *This project has been created as part of the 42 curriculum by caide-so.*
+
+# ft_printf
 
 ## Description
 
